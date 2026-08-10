@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -27,7 +28,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Fields hidden from API/JSON responses.
+     * Fields hidden from array / JSON responses.
      */
     protected $hidden = [
         'password',
@@ -53,5 +54,22 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Return the identifier that will be stored
+     * in the JWT subject claim.
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return additional custom claims for JWT.
+     */
+    public function getJWTCustomClaims(): array
+    {
+        return [];
     }
 }
