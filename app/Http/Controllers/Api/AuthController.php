@@ -107,4 +107,80 @@ class AuthController extends Controller
             ],
         ]);
     }
+
+    /**
+ * Return the currently authenticated HMS user.
+ */
+public function me(): JsonResponse
+{
+    $user = Auth::guard('api')->user();
+
+    if (!$user) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthenticated.',
+        ], 401);
+    }
+
+    $user->load('role');
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Authenticated user retrieved successfully.',
+
+        'data' => [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'username' => $user->username,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'is_active' => $user->is_active,
+
+                'role' => [
+                    'id' => $user->role?->id,
+                    'name' => $user->role?->name,
+                    'slug' => $user->role?->slug,
+                ],
+
+                'last_login_at' => $user->last_login_at,
+            ],
+        ],
+    ]);
+}
+
+/**
+ * Log out the currently authenticated HMS user
+ * and invalidate the current JWT.
+ */
+public function logout(): JsonResponse
+{
+    Auth::guard('api')->logout();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Logout successful.',
+    ]);
+}
+
+/**
+ * Refresh the current JWT and return a new token.
+ */
+public function refresh(): JsonResponse
+{
+    $newToken = Auth::guard('api')->refresh();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Token refreshed successfully.',
+
+        'data' => [
+            'authorization' => [
+                'token' => $newToken,
+                'type' => 'bearer',
+                'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
+            ],
+        ],
+    ]);
+}
 }
