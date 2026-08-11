@@ -41,3 +41,4 @@ Route::prefix('auth')->group(function () {
     });
 
 });
+
