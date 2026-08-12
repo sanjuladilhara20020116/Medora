@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,3 +42,20 @@ Route::prefix('auth')->group(function () {
 
 });
 
+/*
+|--------------------------------------------------------------------------
+| Administrator Dashboard
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware([
+    'auth:api',
+    'role:ADMIN',
+])->group(function () {
+
+    Route::get(
+        '/dashboard/admin',
+        [DashboardController::class, 'admin']
+    )->name('api.dashboard.admin');
+
+});

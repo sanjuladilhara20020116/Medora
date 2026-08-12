@@ -153,6 +153,325 @@ const initialiseLoginPage = async () => {
     });
 };
 
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+
+const setDashboardText = (id, value) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+};
+
+
+const renderRoleDistribution = (roles = []) => {
+    const container =
+        document.getElementById('roleDistribution');
+
+    if (!container) {
+        return;
+    }
+
+    container.replaceChildren();
+
+    if (roles.length === 0) {
+        container.textContent =
+            'No role information is available.';
+
+        return;
+    }
+
+    const maximum =
+        Math.max(
+            ...roles.map((role) => Number(role.total)),
+            1
+        );
+
+    roles.forEach((role) => {
+
+        const wrapper =
+            document.createElement('div');
+
+
+        const header =
+            document.createElement('div');
+
+        header.className =
+            'mb-2 flex items-center justify-between';
+
+
+        const name =
+            document.createElement('span');
+
+        name.className =
+            'text-sm font-medium text-slate-700';
+
+        name.textContent =
+            role.name;
+
+
+        const count =
+            document.createElement('span');
+
+        count.className =
+            'text-sm font-bold text-slate-950';
+
+        count.textContent =
+            role.total;
+
+
+        header.append(name, count);
+
+
+        const track =
+            document.createElement('div');
+
+        track.className =
+            'h-2 overflow-hidden rounded-full bg-slate-100';
+
+
+        const bar =
+            document.createElement('div');
+
+        bar.className =
+            'h-full rounded-full bg-cyan-500';
+
+        bar.style.width =
+            `${(Number(role.total) / maximum) * 100}%`;
+
+
+        track.appendChild(bar);
+
+        wrapper.append(header, track);
+
+        container.appendChild(wrapper);
+
+    });
+};
+
+
+const renderRecentLogins = (users = []) => {
+    const container =
+        document.getElementById('recentLogins');
+
+    if (!container) {
+        return;
+    }
+
+    container.replaceChildren();
+
+
+    if (users.length === 0) {
+
+        const empty =
+            document.createElement('p');
+
+        empty.className =
+            'py-4 text-sm text-slate-400';
+
+        empty.textContent =
+            'No login activity available.';
+
+        container.appendChild(empty);
+
+        return;
+    }
+
+
+    users.forEach((user) => {
+
+        const row =
+            document.createElement('div');
+
+        row.className =
+            'flex items-center justify-between gap-4 py-4';
+
+
+        const details =
+            document.createElement('div');
+
+
+        const name =
+            document.createElement('p');
+
+        name.className =
+            'text-sm font-semibold text-slate-900';
+
+        name.textContent =
+            user.name;
+
+
+        const role =
+            document.createElement('p');
+
+        role.className =
+            'mt-1 text-xs text-slate-500';
+
+        role.textContent =
+            user.role?.name ?? 'No role';
+
+
+        details.append(name, role);
+
+
+        const time =
+            document.createElement('p');
+
+        time.className =
+            'text-right text-xs text-slate-400';
+
+        time.textContent =
+            user.last_login_at
+                ? new Date(
+                    user.last_login_at
+                ).toLocaleString()
+                : 'Never';
+
+
+        row.append(details, time);
+
+        container.appendChild(row);
+
+    });
+};
+
+
+const loadAdminDashboard = async () => {
+    const root =
+        document.getElementById('dashboardDataRoot');
+
+    if (!root) {
+        return;
+    }
+
+
+    const errorBox =
+        document.getElementById('dashboardError');
+
+
+    try {
+
+        const response =
+            await apiRequest('/dashboard/admin');
+
+        const data =
+            response.data;
+
+
+        /*
+         * Core statistics
+         */
+
+        setDashboardText(
+            'statTotalUsers',
+            data.core_statistics.total_users
+        );
+
+        setDashboardText(
+            'statActiveUsers',
+            data.core_statistics.active_users
+        );
+
+        setDashboardText(
+            'statActiveRoles',
+            data.core_statistics.active_roles
+        );
+
+        setDashboardText(
+            'statDepartments',
+            data.core_statistics.active_departments
+        );
+
+
+        /*
+         * Module statistics
+         */
+
+        Object.entries(
+            data.module_statistics
+        ).forEach(([key, metric]) => {
+
+            const valueElement =
+                document.getElementById(
+                    `module-${key}-value`
+                );
+
+            const statusElement =
+                document.getElementById(
+                    `module-${key}-status`
+                );
+
+
+            if (!valueElement || !statusElement) {
+                return;
+            }
+
+
+            if (metric.available) {
+
+                valueElement.textContent =
+                    metric.value;
+
+                statusElement.textContent =
+                    'Live database data';
+
+            } else {
+
+                valueElement.textContent =
+                    '—';
+
+                statusElement.textContent =
+                    'Module not initialized';
+
+            }
+
+        });
+
+
+        /*
+         * Other dashboard components
+         */
+
+        renderRoleDistribution(
+            data.role_distribution
+        );
+
+        renderRecentLogins(
+            data.recent_logins
+        );
+
+
+        setDashboardText(
+            'dashboardUpdatedAt',
+            new Date(
+                data.generated_at
+            ).toLocaleString()
+        );
+
+
+        errorBox?.classList.add('hidden');
+
+    } catch (error) {
+
+        if (errorBox) {
+
+            errorBox.textContent =
+                error.message ??
+                'Dashboard information could not be loaded.';
+
+            errorBox.classList.remove(
+                'hidden'
+            );
+
+        }
+
+    }
+};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -197,6 +516,9 @@ const initialiseApplication = async () => {
         }
 
         shell.classList.remove('hidden');
+        if (user.role?.slug === 'ADMIN') {
+    await loadAdminDashboard();
+}
 
     } catch {
         clearToken();
