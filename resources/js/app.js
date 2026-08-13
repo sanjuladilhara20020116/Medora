@@ -1,4 +1,11 @@
 import {initialisePatientPages} from './patients';
+import {
+    initialiseDepartmentsPage
+} from './departments';
+
+import {
+    initialiseDoctorPages
+} from './doctors';
 
 const TOKEN_KEY = 'medora_access_token';
 
@@ -527,6 +534,16 @@ const initialiseApplication = async () => {
 }
 
 await initialisePatientPages(
+    apiRequest,
+    user
+);
+
+await initialiseDepartmentsPage(
+    apiRequest,
+    user
+);
+
+await initialiseDoctorPages(
     apiRequest,
     user
 );

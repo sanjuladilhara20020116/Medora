@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -57,8 +58,15 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Return the identifier that will be stored
-     * in the JWT subject claim.
+     * A user may have one doctor profile.
+     */
+    public function doctor(): HasOne
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    /**
+     * Return the identifier stored in the JWT subject claim.
      */
     public function getJWTIdentifier()
     {

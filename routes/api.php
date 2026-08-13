@@ -3,6 +3,8 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\DoctorController;
 
 Route::get('/health', function () {
     return response()->json([
@@ -160,4 +162,147 @@ Route::prefix('patients')
 
         });
 
+    });
+
+    /*
+|--------------------------------------------------------------------------
+| Department Management
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('departments')
+    ->middleware('auth:api')
+    ->group(function () {
+
+        Route::middleware(
+            'role:ADMIN,DOCTOR,NURSE,RECEPTIONIST'
+        )->group(function () {
+
+            Route::get(
+                '/',
+                [
+                    DepartmentController::class,
+                    'index',
+                ]
+            );
+
+            Route::get(
+                '/{department}',
+                [
+                    DepartmentController::class,
+                    'show',
+                ]
+            );
+        });
+
+
+        Route::middleware(
+            'role:ADMIN'
+        )->group(function () {
+
+            Route::post(
+                '/',
+                [
+                    DepartmentController::class,
+                    'store',
+                ]
+            );
+
+            Route::put(
+                '/{department}',
+                [
+                    DepartmentController::class,
+                    'update',
+                ]
+            );
+
+            Route::delete(
+                '/{department}',
+                [
+                    DepartmentController::class,
+                    'destroy',
+                ]
+            );
+        });
+    });
+
+
+/*
+|--------------------------------------------------------------------------
+| Doctor Management
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('doctors')
+    ->middleware('auth:api')
+    ->group(function () {
+
+        Route::middleware(
+            'role:ADMIN,DOCTOR,NURSE,RECEPTIONIST'
+        )->group(function () {
+
+            Route::get(
+                '/',
+                [
+                    DoctorController::class,
+                    'index',
+                ]
+            );
+
+            Route::get(
+                '/{doctor}',
+                [
+                    DoctorController::class,
+                    'show',
+                ]
+            );
+        });
+
+
+        Route::middleware(
+            'role:ADMIN'
+        )->group(function () {
+
+            Route::post(
+                '/',
+                [
+                    DoctorController::class,
+                    'store',
+                ]
+            );
+
+            Route::put(
+                '/{doctor}',
+                [
+                    DoctorController::class,
+                    'update',
+                ]
+            );
+
+            Route::delete(
+                '/{doctor}',
+                [
+                    DoctorController::class,
+                    'destroy',
+                ]
+            );
+
+
+            Route::post(
+                '/{doctor}/schedules',
+                [
+                    DoctorController::class,
+                    'storeSchedule',
+                ]
+            );
+
+
+            Route::delete(
+                '/{doctor}/schedules/{schedule}',
+                [
+                    DoctorController::class,
+                    'destroySchedule',
+                ]
+            );
+        });
     });

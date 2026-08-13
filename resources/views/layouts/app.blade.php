@@ -161,13 +161,81 @@
 
 
             {{-- ================================================= --}}
+            {{-- Departments --}}
+            {{-- Step 8 - Real Module --}}
+            {{-- ================================================= --}}
+
+            <a
+                href="{{ route('departments.index') }}"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('departments.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('departments.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Departments
+
+            </a>
+
+
+            {{-- ================================================= --}}
+            {{-- Doctors --}}
+            {{-- Step 8 - Real Module --}}
+            {{-- ================================================= --}}
+
+            <a
+                href="{{ route('doctors.index') }}"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('doctors.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('doctors.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Doctors
+
+            </a>
+
+
+            {{-- ================================================= --}}
             {{-- Future HMS Modules --}}
             {{-- ================================================= --}}
+
+            <p
+                class="mb-2 mt-6 px-3 text-xs font-semibold uppercase tracking-wider text-slate-600"
+            >
+                Coming Next
+            </p>
+
 
             @php
 
                 $futureModules = [
-                    'Doctors',
                     'Appointments',
                     'Medical Records',
                     'Laboratory',

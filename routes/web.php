@@ -46,3 +46,48 @@ Route::get(
     }
 )->whereNumber('patientId')
     ->name('patients.show');    
+
+Route::view(
+    '/departments',
+    'departments.index'
+)->name('departments.index');
+
+
+Route::view(
+    '/doctors',
+    'doctors.index'
+)->name('doctors.index');
+
+
+Route::view(
+    '/doctors/create',
+    'doctors.form'
+)->name('doctors.create');
+
+
+Route::get(
+    '/doctors/{doctorId}/edit',
+    function (int $doctorId) {
+
+        return view(
+            'doctors.form',
+            compact('doctorId')
+        );
+    }
+)
+    ->whereNumber('doctorId')
+    ->name('doctors.edit');
+
+
+Route::get(
+    '/doctors/{doctorId}',
+    function (int $doctorId) {
+
+        return view(
+            'doctors.show',
+            compact('doctorId')
+        );
+    }
+)
+    ->whereNumber('doctorId')
+    ->name('doctors.show');    
