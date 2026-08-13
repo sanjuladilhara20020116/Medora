@@ -90,4 +90,43 @@ Route::get(
     }
 )
     ->whereNumber('doctorId')
-    ->name('doctors.show');    
+    ->name('doctors.show');  
+    
+Route::view(
+    '/appointments',
+    'appointments.index'
+)->name('appointments.index');
+
+
+Route::view(
+    '/appointments/create',
+    'appointments.form'
+)->name('appointments.create');
+
+
+Route::get(
+    '/appointments/{appointmentId}/edit',
+    function (int $appointmentId) {
+
+        return view(
+            'appointments.form',
+            compact('appointmentId')
+        );
+    }
+)
+    ->whereNumber('appointmentId')
+    ->name('appointments.edit');
+
+
+Route::get(
+    '/appointments/{appointmentId}',
+    function (int $appointmentId) {
+
+        return view(
+            'appointments.show',
+            compact('appointmentId')
+        );
+    }
+)
+    ->whereNumber('appointmentId')
+    ->name('appointments.show');    

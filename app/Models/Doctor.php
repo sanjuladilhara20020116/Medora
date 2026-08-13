@@ -60,4 +60,9 @@ class Doctor extends Model
             DoctorSchedule::class
         );
     }
+
+    public function appointments(): HasMany
+{
+    return $this->hasMany(Appointment::class);
+}
 }

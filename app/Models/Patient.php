@@ -60,4 +60,9 @@ class Patient extends Model
             PatientDocument::class
         );
     }
+
+    public function appointments(): HasMany
+{
+    return $this->hasMany(Appointment::class);
+}
 }

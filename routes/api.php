@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\AppointmentController;
 
 Route::get('/health', function () {
     return response()->json([
@@ -306,3 +307,107 @@ Route::prefix('doctors')
             );
         });
     });
+
+/*
+|--------------------------------------------------------------------------
+| Appointment Management
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('appointments')
+    ->middleware('auth:api')
+    ->group(function () {
+
+        /*
+         * Important:
+         * /availability must appear before /{appointment}
+         */
+
+        Route::middleware(
+            'role:ADMIN,DOCTOR,NURSE,RECEPTIONIST'
+        )->group(function () {
+
+            Route::get(
+                '/availability',
+                [
+                    AppointmentController::class,
+                    'availability',
+                ]
+            )->name(
+                'api.appointments.availability'
+            );
+
+
+            Route::get(
+                '/',
+                [
+                    AppointmentController::class,
+                    'index',
+                ]
+            )->name(
+                'api.appointments.index'
+            );
+
+
+            Route::get(
+                '/{appointment}',
+                [
+                    AppointmentController::class,
+                    'show',
+                ]
+            )->name(
+                'api.appointments.show'
+            );
+        });
+
+
+        /*
+         * ADMIN / RECEPTIONIST booking
+         */
+
+        Route::middleware(
+            'role:ADMIN,RECEPTIONIST'
+        )->group(function () {
+
+            Route::post(
+                '/',
+                [
+                    AppointmentController::class,
+                    'store',
+                ]
+            )->name(
+                'api.appointments.store'
+            );
+
+
+            Route::put(
+                '/{appointment}',
+                [
+                    AppointmentController::class,
+                    'update',
+                ]
+            )->name(
+                'api.appointments.update'
+            );
+        });
+
+
+        /*
+         * Appointment workflow
+         */
+
+        Route::middleware(
+            'role:ADMIN,DOCTOR,NURSE,RECEPTIONIST'
+        )->group(function () {
+
+            Route::patch(
+                '/{appointment}/status',
+                [
+                    AppointmentController::class,
+                    'updateStatus',
+                ]
+            )->name(
+                'api.appointments.status'
+            );
+        });
+    });    

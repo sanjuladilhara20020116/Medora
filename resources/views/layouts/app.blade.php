@@ -223,6 +223,37 @@
 
 
             {{-- ================================================= --}}
+            {{-- Appointments --}}
+            {{-- Step 9 - Real Module --}}
+            {{-- ================================================= --}}
+
+            <a
+                href="{{ route('appointments.index') }}"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('appointments.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('appointments.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Appointments
+
+            </a>
+
+
+            {{-- ================================================= --}}
             {{-- Future HMS Modules --}}
             {{-- ================================================= --}}
 
@@ -236,7 +267,6 @@
             @php
 
                 $futureModules = [
-                    'Appointments',
                     'Medical Records',
                     'Laboratory',
                     'Pharmacy',
