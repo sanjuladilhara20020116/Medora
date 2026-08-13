@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ac873d55529adedaf5b2501f830568a",
+    "content-hash": "f4d02519d2e211cb35f4e0f9698229a3",
     "packages": [
         {
             "name": "brick/math",
@@ -2684,16 +2684,16 @@
         },
         {
             "name": "php-open-source-saver/jwt-auth",
-            "version": "v2.9.0",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-Open-Source-Saver/jwt-auth.git",
-                "reference": "648306caac5218e2daebfd2fac0130318ed4bdfa"
+                "reference": "ce08363a9986e5253efd3663ed4f75c976bec89a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-Open-Source-Saver/jwt-auth/zipball/648306caac5218e2daebfd2fac0130318ed4bdfa",
-                "reference": "648306caac5218e2daebfd2fac0130318ed4bdfa",
+                "url": "https://api.github.com/repos/PHP-Open-Source-Saver/jwt-auth/zipball/ce08363a9986e5253efd3663ed4f75c976bec89a",
+                "reference": "ce08363a9986e5253efd3663ed4f75c976bec89a",
                 "shasum": ""
             },
             "require": {
@@ -2773,7 +2773,7 @@
                 "issues": "https://github.com/PHP-Open-Source-Saver/jwt-auth/issues",
                 "source": "https://github.com/PHP-Open-Source-Saver/jwt-auth"
             },
-            "time": "2026-03-06T00:13:17+00:00"
+            "time": "2026-05-07T16:44:01+00:00"
         },
         {
             "name": "phpoption/phpoption",
