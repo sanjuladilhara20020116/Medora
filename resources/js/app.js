@@ -1,3 +1,5 @@
+import {initialisePatientPages} from './patients';
+
 const TOKEN_KEY = 'medora_access_token';
 
 const getToken = () => sessionStorage.getItem(TOKEN_KEY);
@@ -42,9 +44,13 @@ const apiRequest = async (endpoint, options = {}) => {
         headers.Authorization = `Bearer ${token}`;
     }
 
-    if (options.body && !headers['Content-Type']) {
-        headers['Content-Type'] = 'application/json';
-    }
+    if (
+    options.body &&
+    !(options.body instanceof FormData) &&
+    !headers['Content-Type']
+) {
+    headers['Content-Type'] = 'application/json';
+}
 
     const response = await fetch(`/api${endpoint}`, {
         ...options,
@@ -519,6 +525,11 @@ const initialiseApplication = async () => {
         if (user.role?.slug === 'ADMIN') {
     await loadAdminDashboard();
 }
+
+await initialisePatientPages(
+    apiRequest,
+    user
+);
 
     } catch {
         clearToken();

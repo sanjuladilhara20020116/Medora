@@ -10,6 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="description"
+        content="Medora Hospital Management System"
+    >
+
     <title>
         @yield('title', 'Medora HMS')
     </title>
@@ -31,20 +36,29 @@
     class="hidden min-h-screen"
 >
 
-    {{-- Mobile Overlay --}}
+    {{-- ========================================================= --}}
+    {{-- Mobile Sidebar Overlay --}}
+    {{-- ========================================================= --}}
+
     <div
         id="sidebarBackdrop"
         class="fixed inset-0 z-40 hidden bg-slate-950/50 lg:hidden"
     ></div>
 
 
+    {{-- ========================================================= --}}
     {{-- Sidebar --}}
+    {{-- ========================================================= --}}
+
     <aside
         id="sidebar"
         class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col bg-slate-950 text-white transition-transform duration-300 lg:translate-x-0"
     >
 
+        {{-- ===================================================== --}}
         {{-- Logo --}}
+        {{-- ===================================================== --}}
+
         <div
             class="flex h-20 items-center border-b border-white/10 px-6"
         >
@@ -70,7 +84,10 @@
         </div>
 
 
+        {{-- ===================================================== --}}
         {{-- Navigation --}}
+        {{-- ===================================================== --}}
+
         <nav
             class="flex-1 overflow-y-auto px-4 py-6"
         >
@@ -81,21 +98,75 @@
                 Workspace
             </p>
 
+
+            {{-- ================================================= --}}
+            {{-- Dashboard --}}
+            {{-- ================================================= --}}
+
             <a
                 href="{{ route('dashboard') }}"
-                class="mb-1 flex items-center rounded-xl bg-cyan-400/10 px-3 py-3 text-sm font-semibold text-cyan-300"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('dashboard')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
             >
+
                 <span
-                    class="mr-3 h-2 w-2 rounded-full bg-cyan-400"
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('dashboard')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
                 ></span>
 
                 Dashboard
+
             </a>
 
 
+            {{-- ================================================= --}}
+            {{-- Patients --}}
+            {{-- Step 7 - Real Module --}}
+            {{-- ================================================= --}}
+
+            <a
+                href="{{ route('patients.index') }}"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('patients.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('patients.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Patients
+
+            </a>
+
+
+            {{-- ================================================= --}}
+            {{-- Future HMS Modules --}}
+            {{-- ================================================= --}}
+
             @php
+
                 $futureModules = [
-                    'Patients',
                     'Doctors',
                     'Appointments',
                     'Medical Records',
@@ -105,7 +176,9 @@
                     'Staff',
                     'Reports & Analytics',
                 ];
+
             @endphp
+
 
             @foreach($futureModules as $module)
 
@@ -124,7 +197,7 @@
                     </div>
 
                     <span
-                        class="rounded-md bg-white/5 px-2 py-1 text-[10px] text-slate-500"
+                        class="rounded-md bg-white/5 px-2 py-1 text-[10px] font-medium text-slate-500"
                     >
                         Soon
                     </span>
@@ -136,7 +209,10 @@
         </nav>
 
 
+        {{-- ===================================================== --}}
         {{-- Sidebar Footer --}}
+        {{-- ===================================================== --}}
+
         <div
             class="border-t border-white/10 p-4"
         >
@@ -145,11 +221,25 @@
                 class="rounded-xl bg-white/5 px-4 py-3"
             >
 
-                <p class="text-xs font-semibold text-slate-300">
-                    Secure Session
-                </p>
+                <div
+                    class="flex items-center gap-2"
+                >
 
-                <p class="mt-1 text-xs text-slate-500">
+                    <span
+                        class="h-2 w-2 rounded-full bg-emerald-400"
+                    ></span>
+
+                    <p
+                        class="text-xs font-semibold text-slate-300"
+                    >
+                        Secure Session
+                    </p>
+
+                </div>
+
+                <p
+                    class="mt-1 text-xs text-slate-500"
+                >
                     Protected by JWT authentication
                 </p>
 
@@ -160,15 +250,26 @@
     </aside>
 
 
+    {{-- ========================================================= --}}
     {{-- Main Application --}}
+    {{-- ========================================================= --}}
+
     <div class="lg:pl-72">
 
+
+        {{-- ===================================================== --}}
         {{-- Header --}}
+        {{-- ===================================================== --}}
+
         <header
             class="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white/95 px-5 backdrop-blur lg:px-8"
         >
 
+            {{-- Left Header --}}
+
             <div class="flex items-center">
+
+                {{-- Mobile Menu --}}
 
                 <button
                     id="mobileMenuButton"
@@ -178,6 +279,9 @@
                 >
                     ☰
                 </button>
+
+
+                {{-- Page Heading --}}
 
                 <div>
 
@@ -198,12 +302,19 @@
             </div>
 
 
-            {{-- User --}}
+            {{-- ================================================= --}}
+            {{-- Current User --}}
+            {{-- ================================================= --}}
+
             <div
                 class="flex items-center gap-4"
             >
 
-                <div class="hidden text-right sm:block">
+                {{-- User Information --}}
+
+                <div
+                    class="hidden text-right sm:block"
+                >
 
                     <p
                         id="currentUserName"
@@ -221,6 +332,9 @@
 
                 </div>
 
+
+                {{-- User Avatar --}}
+
                 <div
                     id="userAvatar"
                     class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white"
@@ -228,10 +342,13 @@
                     M
                 </div>
 
+
+                {{-- Logout --}}
+
                 <button
                     id="logoutButton"
                     type="button"
-                    class="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                    class="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     Logout
                 </button>
@@ -241,7 +358,10 @@
         </header>
 
 
+        {{-- ===================================================== --}}
         {{-- Page Content --}}
+        {{-- ===================================================== --}}
+
         <main
             class="p-5 lg:p-8"
         >

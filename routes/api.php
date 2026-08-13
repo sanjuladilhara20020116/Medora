@@ -2,6 +2,7 @@
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PatientController;
 
 Route::get('/health', function () {
     return response()->json([
@@ -59,3 +60,104 @@ Route::middleware([
     )->name('api.dashboard.admin');
 
 });
+
+/*
+|--------------------------------------------------------------------------
+| Patient Management
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('patients')
+    ->middleware('auth:api')
+    ->group(function () {
+
+        /*
+         * View patients
+         */
+        Route::middleware(
+            'role:ADMIN,DOCTOR,NURSE,RECEPTIONIST'
+        )->group(function () {
+
+            Route::get(
+                '/',
+                [PatientController::class, 'index']
+            )->name('api.patients.index');
+
+            Route::get(
+                '/{patient}',
+                [PatientController::class, 'show']
+            )->name('api.patients.show');
+
+        });
+
+
+        /*
+         * Register and update patients
+         */
+        Route::middleware(
+            'role:ADMIN,RECEPTIONIST'
+        )->group(function () {
+
+            Route::post(
+                '/',
+                [PatientController::class, 'store']
+            )->name('api.patients.store');
+
+            Route::put(
+                '/{patient}',
+                [PatientController::class, 'update']
+            )->name('api.patients.update');
+
+            Route::patch(
+                '/{patient}',
+                [PatientController::class, 'update']
+            );
+
+        });
+
+
+        /*
+         * Patient documents
+         */
+        Route::middleware(
+            'role:ADMIN,DOCTOR,NURSE,RECEPTIONIST'
+        )->group(function () {
+
+            Route::post(
+                '/{patient}/documents',
+                [
+                    PatientController::class,
+                    'storeDocument',
+                ]
+            )->name(
+                'api.patients.documents.store'
+            );
+
+        });
+
+
+        /*
+         * ADMIN-only destructive actions
+         */
+        Route::middleware(
+            'role:ADMIN'
+        )->group(function () {
+
+            Route::delete(
+                '/{patient}',
+                [PatientController::class, 'destroy']
+            )->name('api.patients.destroy');
+
+            Route::delete(
+                '/{patient}/documents/{document}',
+                [
+                    PatientController::class,
+                    'destroyDocument',
+                ]
+            )->name(
+                'api.patients.documents.destroy'
+            );
+
+        });
+
+    });
