@@ -146,3 +146,54 @@ Route::get(
     }
 )->whereNumber('medicalRecordId')
     ->name('medical-records.show');
+
+Route::view(
+    '/laboratory',
+    'laboratory.index'
+)->name('laboratory.index');
+
+Route::view(
+    '/laboratory/requests/create',
+    'laboratory.request-form'
+)->name('laboratory.requests.create');
+
+Route::get(
+    '/laboratory/requests/{labRequestId}',
+    function (int $labRequestId) {
+        return view('laboratory.show', compact('labRequestId'));
+    }
+)->whereNumber('labRequestId')
+    ->name('laboratory.requests.show');
+
+Route::view(
+    '/laboratory/tests',
+    'laboratory.tests'
+)->name('laboratory.tests');
+
+Route::view(
+    '/pharmacy',
+    'pharmacy.index'
+)->name('pharmacy.index');
+
+Route::view(
+    '/pharmacy/catalogue',
+    'pharmacy.catalogue'
+)->name('pharmacy.catalogue');
+
+Route::view(
+    '/pharmacy/stock',
+    'pharmacy.stock'
+)->name('pharmacy.stock');
+
+Route::view(
+    '/pharmacy/prescriptions',
+    'pharmacy.prescriptions'
+)->name('pharmacy.prescriptions');
+
+Route::get(
+    '/pharmacy/prescriptions/{prescriptionId}',
+    function (int $prescriptionId) {
+        return view('pharmacy.dispense', compact('prescriptionId'));
+    }
+)->whereNumber('prescriptionId')
+    ->name('pharmacy.prescriptions.dispense');

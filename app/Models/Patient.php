@@ -70,4 +70,14 @@ class Patient extends Model
     {
         return $this->hasMany(MedicalRecord::class);
     }
+
+    public function labRequests(): HasMany
+    {
+        return $this->hasMany(LabRequest::class);
+    }
+
+    public function prescriptionDispenses(): HasMany
+    {
+        return $this->hasMany(PrescriptionDispense::class);
+    }
 }

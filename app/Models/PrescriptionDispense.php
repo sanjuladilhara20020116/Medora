@@ -6,24 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PrescriptionItem extends Model
+class PrescriptionDispense extends Model
 {
     protected $fillable = [
+        'dispense_code',
         'prescription_id',
-        'medicine_name',
-        'dosage',
-        'frequency',
-        'duration_days',
-        'quantity',
-        'instructions',
+        'patient_id',
+        'dispensed_by',
+        'status',
+        'notes',
+        'dispensed_at',
     ];
 
     protected function casts(): array
     {
-        return [
-            'duration_days' => 'integer',
-            'quantity' => 'decimal:2',
-        ];
+        return ['dispensed_at' => 'datetime'];
     }
 
     public function prescription(): BelongsTo
@@ -31,7 +28,17 @@ class PrescriptionItem extends Model
         return $this->belongsTo(Prescription::class);
     }
 
-    public function dispenseItems(): HasMany
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function dispensedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'dispensed_by');
+    }
+
+    public function items(): HasMany
     {
         return $this->hasMany(PrescriptionDispenseItem::class);
     }

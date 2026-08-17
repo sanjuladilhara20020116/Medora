@@ -12,6 +12,12 @@ import {
 import {
     initialiseMedicalRecordPages
 } from './medical-records';
+import {
+    initialiseLaboratoryPages
+} from './laboratory';
+import {
+    initialisePharmacyPages
+} from './pharmacy';
 
 const TOKEN_KEY = 'medora_access_token';
 
@@ -560,6 +566,16 @@ await initialiseAppointmentPages(
 );
 
 await initialiseMedicalRecordPages(
+    apiRequest,
+    user
+);
+
+await initialiseLaboratoryPages(
+    apiRequest,
+    user
+);
+
+await initialisePharmacyPages(
     apiRequest,
     user
 );
