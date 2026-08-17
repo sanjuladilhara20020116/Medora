@@ -243,3 +243,8 @@ Route::view(
     '/staff/leave-requests',
     'staff.leaves'
 )->name('staff.leave-requests');
+
+Route::view(
+    '/reports',
+    'reports.index'
+)->name('reports.index');

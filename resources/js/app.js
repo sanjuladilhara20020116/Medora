@@ -24,6 +24,9 @@ import {
 import {
     initialiseStaffPages
 } from './staff';
+import {
+    initialiseReportsPages
+} from './reports';
 
 const TOKEN_KEY = 'medora_access_token';
 
@@ -592,6 +595,11 @@ await initialiseBillingPages(
 );
 
 await initialiseStaffPages(
+    apiRequest,
+    user
+);
+
+await initialiseReportsPages(
     apiRequest,
     user
 );

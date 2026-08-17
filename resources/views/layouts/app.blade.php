@@ -367,52 +367,28 @@
                 Staff
             </a>
 
-
-            {{-- ================================================= --}}
-            {{-- Future HMS Modules --}}
-            {{-- ================================================= --}}
-
-            <p
-                class="mb-2 mt-6 px-3 text-xs font-semibold uppercase tracking-wider text-slate-600"
+            <a
+                href="{{ route('reports.index') }}"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('reports.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
             >
-                Coming Next
-            </p>
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('reports.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
 
-
-            @php
-
-                $futureModules = [
-                    'Reports & Analytics',
-                ];
-
-            @endphp
-
-
-            @foreach($futureModules as $module)
-
-                <div
-                    class="mb-1 flex items-center justify-between rounded-xl px-3 py-3 text-sm text-slate-400"
-                >
-
-                    <div class="flex items-center">
-
-                        <span
-                            class="mr-3 h-2 w-2 rounded-full bg-slate-700"
-                        ></span>
-
-                        {{ $module }}
-
-                    </div>
-
-                    <span
-                        class="rounded-md bg-white/5 px-2 py-1 text-[10px] font-medium text-slate-500"
-                    >
-                        Soon
-                    </span>
-
-                </div>
-
-            @endforeach
+                Reports &amp; Analytics
+            </a>
 
         </nav>
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\LaboratoryController;
 use App\Http\Controllers\Api\MedicalRecordController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PharmacyController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\StaffController;
 use Illuminate\Support\Facades\Route;
 
@@ -594,4 +595,28 @@ Route::prefix('staff')
             ->name('api.staff.leave-requests.store');
         Route::patch('/leave-requests/{leaveRequest}/review', [StaffController::class, 'reviewLeaveRequest'])
             ->name('api.staff.leave-requests.review');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Reports & Analytics
+|--------------------------------------------------------------------------
+*/
+Route::prefix('reports')
+    ->middleware(['auth:api', 'role:ADMIN'])
+    ->group(function () {
+        Route::get('/overview', [ReportController::class, 'overview'])
+            ->name('api.reports.overview');
+        Route::get('/patients', [ReportController::class, 'patients'])
+            ->name('api.reports.patients');
+        Route::get('/appointments', [ReportController::class, 'appointments'])
+            ->name('api.reports.appointments');
+        Route::get('/revenue', [ReportController::class, 'revenue'])
+            ->name('api.reports.revenue');
+        Route::get('/pharmacy', [ReportController::class, 'pharmacy'])
+            ->name('api.reports.pharmacy');
+        Route::get('/laboratory', [ReportController::class, 'laboratory'])
+            ->name('api.reports.laboratory');
+        Route::get('/staff', [ReportController::class, 'staff'])
+            ->name('api.reports.staff');
     });
