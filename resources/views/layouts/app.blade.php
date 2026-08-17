@@ -321,6 +321,52 @@
                 Pharmacy
             </a>
 
+            <a
+                href="{{ route('billing.index') }}"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('billing.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('billing.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Billing &amp; Payments
+            </a>
+
+            <a
+                href="{{ route('staff.index') }}"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('staff.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('staff.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Staff
+            </a>
+
 
             {{-- ================================================= --}}
             {{-- Future HMS Modules --}}
@@ -336,8 +382,6 @@
             @php
 
                 $futureModules = [
-                    'Billing & Payments',
-                    'Staff',
                     'Reports & Analytics',
                 ];
 

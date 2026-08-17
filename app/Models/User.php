@@ -65,6 +65,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Doctor::class);
     }
 
+    public function employee(): HasOne
+    {
+        return $this->hasOne(Employee::class);
+    }
+
     /**
      * Return the identifier stored in the JWT subject claim.
      */

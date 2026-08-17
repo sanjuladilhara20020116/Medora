@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BillingController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DoctorController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Api\LaboratoryController;
 use App\Http\Controllers\Api\MedicalRecordController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PharmacyController;
+use App\Http\Controllers\Api\StaffController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
@@ -528,3 +530,68 @@ Route::middleware('auth:api')->group(function () {
             ->name('api.pharmacy.prescriptions.dispense');
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Billing & Payments
+|--------------------------------------------------------------------------
+*/
+Route::prefix('billing')
+    ->middleware(['auth:api', 'role:ADMIN,ACCOUNTANT'])
+    ->group(function () {
+        Route::get('/summary', [BillingController::class, 'summary'])
+            ->name('api.billing.summary');
+        Route::get('/patients', [BillingController::class, 'patients'])
+            ->name('api.billing.patients');
+        Route::get('/available-charges', [BillingController::class, 'availableCharges'])
+            ->name('api.billing.available-charges');
+        Route::get('/invoices', [BillingController::class, 'index'])
+            ->name('api.billing.invoices.index');
+        Route::post('/invoices', [BillingController::class, 'store'])
+            ->name('api.billing.invoices.store');
+        Route::get('/invoices/{invoice}', [BillingController::class, 'show'])
+            ->name('api.billing.invoices.show');
+        Route::post('/invoices/{invoice}/payments', [BillingController::class, 'storePayment'])
+            ->name('api.billing.invoices.payments.store');
+        Route::post('/invoices/{invoice}/cancel', [BillingController::class, 'cancel'])
+            ->name('api.billing.invoices.cancel');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Staff Management
+|--------------------------------------------------------------------------
+*/
+Route::prefix('staff')
+    ->middleware(['auth:api', 'role:ADMIN'])
+    ->group(function () {
+        Route::get('/summary', [StaffController::class, 'summary'])
+            ->name('api.staff.summary');
+        Route::get('/form-data', [StaffController::class, 'employeeFormData'])
+            ->name('api.staff.form-data');
+
+        Route::get('/employees', [StaffController::class, 'employees'])
+            ->name('api.staff.employees.index');
+        Route::post('/employees', [StaffController::class, 'storeEmployee'])
+            ->name('api.staff.employees.store');
+        Route::get('/employees/{employee}', [StaffController::class, 'showEmployee'])
+            ->name('api.staff.employees.show');
+        Route::put('/employees/{employee}', [StaffController::class, 'updateEmployee'])
+            ->name('api.staff.employees.update');
+        Route::delete('/employees/{employee}', [StaffController::class, 'archiveEmployee'])
+            ->name('api.staff.employees.archive');
+
+        Route::get('/attendance', [StaffController::class, 'attendance'])
+            ->name('api.staff.attendance.index');
+        Route::post('/attendance', [StaffController::class, 'storeAttendance'])
+            ->name('api.staff.attendance.store');
+        Route::patch('/attendance/{attendanceRecord}/clock-out', [StaffController::class, 'clockOut'])
+            ->name('api.staff.attendance.clock-out');
+
+        Route::get('/leave-requests', [StaffController::class, 'leaveRequests'])
+            ->name('api.staff.leave-requests.index');
+        Route::post('/leave-requests', [StaffController::class, 'storeLeaveRequest'])
+            ->name('api.staff.leave-requests.store');
+        Route::patch('/leave-requests/{leaveRequest}/review', [StaffController::class, 'reviewLeaveRequest'])
+            ->name('api.staff.leave-requests.review');
+    });

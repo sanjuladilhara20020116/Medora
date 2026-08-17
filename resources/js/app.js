@@ -18,6 +18,12 @@ import {
 import {
     initialisePharmacyPages
 } from './pharmacy';
+import {
+    initialiseBillingPages
+} from './billing';
+import {
+    initialiseStaffPages
+} from './staff';
 
 const TOKEN_KEY = 'medora_access_token';
 
@@ -576,6 +582,16 @@ await initialiseLaboratoryPages(
 );
 
 await initialisePharmacyPages(
+    apiRequest,
+    user
+);
+
+await initialiseBillingPages(
+    apiRequest,
+    user
+);
+
+await initialiseStaffPages(
     apiRequest,
     user
 );

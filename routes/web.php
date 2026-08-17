@@ -197,3 +197,49 @@ Route::get(
     }
 )->whereNumber('prescriptionId')
     ->name('pharmacy.prescriptions.dispense');
+
+Route::view(
+    '/billing',
+    'billing.index'
+)->name('billing.index');
+
+Route::view(
+    '/billing/invoices/create',
+    'billing.form'
+)->name('billing.invoices.create');
+
+Route::get(
+    '/billing/invoices/{invoiceId}',
+    function (int $invoiceId) {
+        return view('billing.show', compact('invoiceId'));
+    }
+)->whereNumber('invoiceId')
+    ->name('billing.invoices.show');
+
+Route::view(
+    '/staff',
+    'staff.index'
+)->name('staff.index');
+
+Route::view(
+    '/staff/employees/create',
+    'staff.form'
+)->name('staff.employees.create');
+
+Route::get(
+    '/staff/employees/{employeeId}/edit',
+    function (int $employeeId) {
+        return view('staff.form', compact('employeeId'));
+    }
+)->whereNumber('employeeId')
+    ->name('staff.employees.edit');
+
+Route::view(
+    '/staff/attendance',
+    'staff.attendance'
+)->name('staff.attendance');
+
+Route::view(
+    '/staff/leave-requests',
+    'staff.leaves'
+)->name('staff.leave-requests');
