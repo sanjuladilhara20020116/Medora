@@ -6,6 +6,24 @@ import {
 import {
     initialiseDoctorPages
 } from './doctors';
+import {
+    initialiseAppointmentPages
+} from './appointments';
+import {
+    initialiseMedicalRecordPages
+} from './medical-records';
+import {
+    initialiseLaboratoryPages
+} from './laboratory';
+import {
+    initialisePharmacyPages
+} from './pharmacy';
+import {
+    initialiseBillingPages
+} from './billing';
+import {
+    initialiseStaffPages
+} from './staff';
 
 const TOKEN_KEY = 'medora_access_token';
 
@@ -544,6 +562,36 @@ await initialiseDepartmentsPage(
 );
 
 await initialiseDoctorPages(
+    apiRequest,
+    user
+);
+
+await initialiseAppointmentPages(
+    apiRequest,
+    user
+);
+
+await initialiseMedicalRecordPages(
+    apiRequest,
+    user
+);
+
+await initialiseLaboratoryPages(
+    apiRequest,
+    user
+);
+
+await initialisePharmacyPages(
+    apiRequest,
+    user
+);
+
+await initialiseBillingPages(
+    apiRequest,
+    user
+);
+
+await initialiseStaffPages(
     apiRequest,
     user
 );
