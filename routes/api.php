@@ -1,11 +1,13 @@
 <?php
-use App\Http\Controllers\Api\DashboardController;
+
+use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DoctorController;
-use App\Http\Controllers\Api\AppointmentController;
+use App\Http\Controllers\Api\MedicalRecordController;
+use App\Http\Controllers\Api\PatientController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
     return response()->json([
@@ -36,11 +38,11 @@ Route::prefix('auth')->group(function () {
         Route::get('/me', [AuthController::class, 'me'])
             ->name('api.auth.me');
 
-         Route::post('/logout', [AuthController::class, 'logout'])
-        ->name('api.auth.logout');  
-        
+        Route::post('/logout', [AuthController::class, 'logout'])
+            ->name('api.auth.logout');
+
         Route::post('/refresh', [AuthController::class, 'refresh'])
-    ->name('api.auth.refresh');
+            ->name('api.auth.refresh');
 
     });
 
@@ -93,7 +95,6 @@ Route::prefix('patients')
 
         });
 
-
         /*
          * Register and update patients
          */
@@ -118,7 +119,6 @@ Route::prefix('patients')
 
         });
 
-
         /*
          * Patient documents
          */
@@ -137,7 +137,6 @@ Route::prefix('patients')
             );
 
         });
-
 
         /*
          * ADMIN-only destructive actions
@@ -165,7 +164,7 @@ Route::prefix('patients')
 
     });
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | Department Management
 |--------------------------------------------------------------------------
@@ -196,7 +195,6 @@ Route::prefix('departments')
             );
         });
 
-
         Route::middleware(
             'role:ADMIN'
         )->group(function () {
@@ -226,7 +224,6 @@ Route::prefix('departments')
             );
         });
     });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -259,7 +256,6 @@ Route::prefix('doctors')
             );
         });
 
-
         Route::middleware(
             'role:ADMIN'
         )->group(function () {
@@ -288,7 +284,6 @@ Route::prefix('doctors')
                 ]
             );
 
-
             Route::post(
                 '/{doctor}/schedules',
                 [
@@ -296,7 +291,6 @@ Route::prefix('doctors')
                     'storeSchedule',
                 ]
             );
-
 
             Route::delete(
                 '/{doctor}/schedules/{schedule}',
@@ -337,7 +331,6 @@ Route::prefix('appointments')
                 'api.appointments.availability'
             );
 
-
             Route::get(
                 '/',
                 [
@@ -347,7 +340,6 @@ Route::prefix('appointments')
             )->name(
                 'api.appointments.index'
             );
-
 
             Route::get(
                 '/{appointment}',
@@ -359,7 +351,6 @@ Route::prefix('appointments')
                 'api.appointments.show'
             );
         });
-
 
         /*
          * ADMIN / RECEPTIONIST booking
@@ -379,7 +370,6 @@ Route::prefix('appointments')
                 'api.appointments.store'
             );
 
-
             Route::put(
                 '/{appointment}',
                 [
@@ -390,7 +380,6 @@ Route::prefix('appointments')
                 'api.appointments.update'
             );
         });
-
 
         /*
          * Appointment workflow
@@ -410,4 +399,41 @@ Route::prefix('appointments')
                 'api.appointments.status'
             );
         });
-    });    
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Electronic Medical Records
+|--------------------------------------------------------------------------
+*/
+Route::prefix('medical-records')
+    ->middleware('auth:api')
+    ->group(function () {
+        Route::middleware('role:ADMIN,DOCTOR,NURSE')->group(function () {
+            Route::get('/', [MedicalRecordController::class, 'index'])
+                ->name('api.medical-records.index');
+
+            Route::get('/{medicalRecord}', [MedicalRecordController::class, 'show'])
+                ->name('api.medical-records.show');
+
+            Route::get('/{medicalRecord}/reports/{report}/download', [MedicalRecordController::class, 'downloadReport'])
+                ->name('api.medical-records.reports.download');
+        });
+
+        Route::middleware('role:ADMIN,DOCTOR')->group(function () {
+            Route::post('/', [MedicalRecordController::class, 'store'])
+                ->name('api.medical-records.store');
+
+            Route::put('/{medicalRecord}', [MedicalRecordController::class, 'update'])
+                ->name('api.medical-records.update');
+
+            Route::post('/{medicalRecord}/prescription', [MedicalRecordController::class, 'savePrescription'])
+                ->name('api.medical-records.prescription.save');
+
+            Route::post('/{medicalRecord}/reports', [MedicalRecordController::class, 'storeReport'])
+                ->name('api.medical-records.reports.store');
+
+            Route::delete('/{medicalRecord}/reports/{report}', [MedicalRecordController::class, 'destroyReport'])
+                ->name('api.medical-records.reports.destroy');
+        });
+    });

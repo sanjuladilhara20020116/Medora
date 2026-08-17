@@ -15,12 +15,10 @@ Route::view(
     'patients.index'
 )->name('patients.index');
 
-
 Route::view(
     '/patients/create',
     'patients.form'
 )->name('patients.create');
-
 
 Route::get(
     '/patients/{patientId}/edit',
@@ -34,7 +32,6 @@ Route::get(
 )->whereNumber('patientId')
     ->name('patients.edit');
 
-
 Route::get(
     '/patients/{patientId}',
     function (int $patientId) {
@@ -45,25 +42,22 @@ Route::get(
         );
     }
 )->whereNumber('patientId')
-    ->name('patients.show');    
+    ->name('patients.show');
 
 Route::view(
     '/departments',
     'departments.index'
 )->name('departments.index');
 
-
 Route::view(
     '/doctors',
     'doctors.index'
 )->name('doctors.index');
 
-
 Route::view(
     '/doctors/create',
     'doctors.form'
 )->name('doctors.create');
-
 
 Route::get(
     '/doctors/{doctorId}/edit',
@@ -78,7 +72,6 @@ Route::get(
     ->whereNumber('doctorId')
     ->name('doctors.edit');
 
-
 Route::get(
     '/doctors/{doctorId}',
     function (int $doctorId) {
@@ -90,19 +83,17 @@ Route::get(
     }
 )
     ->whereNumber('doctorId')
-    ->name('doctors.show');  
-    
+    ->name('doctors.show');
+
 Route::view(
     '/appointments',
     'appointments.index'
 )->name('appointments.index');
 
-
 Route::view(
     '/appointments/create',
     'appointments.form'
 )->name('appointments.create');
-
 
 Route::get(
     '/appointments/{appointmentId}/edit',
@@ -117,7 +108,6 @@ Route::get(
     ->whereNumber('appointmentId')
     ->name('appointments.edit');
 
-
 Route::get(
     '/appointments/{appointmentId}',
     function (int $appointmentId) {
@@ -129,4 +119,30 @@ Route::get(
     }
 )
     ->whereNumber('appointmentId')
-    ->name('appointments.show');    
+    ->name('appointments.show');
+
+Route::view(
+    '/medical-records',
+    'medical-records.index'
+)->name('medical-records.index');
+
+Route::view(
+    '/medical-records/create',
+    'medical-records.form'
+)->name('medical-records.create');
+
+Route::get(
+    '/medical-records/{medicalRecordId}/edit',
+    function (int $medicalRecordId) {
+        return view('medical-records.form', compact('medicalRecordId'));
+    }
+)->whereNumber('medicalRecordId')
+    ->name('medical-records.edit');
+
+Route::get(
+    '/medical-records/{medicalRecordId}',
+    function (int $medicalRecordId) {
+        return view('medical-records.show', compact('medicalRecordId'));
+    }
+)->whereNumber('medicalRecordId')
+    ->name('medical-records.show');
