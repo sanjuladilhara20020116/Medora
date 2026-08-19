@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\LaboratoryController;
 use App\Http\Controllers\Api\MedicalRecordController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\PatientPortalController;
 use App\Http\Controllers\Api\PharmacyController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\StaffController;
@@ -321,6 +322,24 @@ Route::prefix('doctor-portal')
             ->name('api.doctor-portal.profile');
         Route::patch('/profile', [DoctorController::class, 'updateProfile'])
             ->name('api.doctor-portal.profile.update');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Patient Portal
+|--------------------------------------------------------------------------
+*/
+Route::prefix('patient-portal')
+    ->middleware(['auth:api', 'role:PATIENT'])
+    ->group(function () {
+        Route::get('/dashboard', [PatientPortalController::class, 'dashboard'])
+            ->name('api.patient-portal.dashboard');
+
+        Route::get('/profile', [PatientPortalController::class, 'profile'])
+            ->name('api.patient-portal.profile');
+
+        Route::patch('/profile', [PatientPortalController::class, 'updateProfile'])
+            ->name('api.patient-portal.profile.update');
     });
 
 /*

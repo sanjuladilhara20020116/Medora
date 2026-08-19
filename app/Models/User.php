@@ -65,6 +65,14 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Doctor::class);
     }
 
+    /**
+     * A patient portal user has one linked patient profile.
+     */
+    public function patient(): HasOne
+    {
+        return $this->hasOne(Patient::class);
+    }
+
     public function employee(): HasOne
     {
         return $this->hasOne(Employee::class);

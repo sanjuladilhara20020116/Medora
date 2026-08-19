@@ -12,6 +12,7 @@ class Patient extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'patient_code',
         'first_name',
         'last_name',
@@ -52,6 +53,11 @@ class Patient extends Model
             User::class,
             'registered_by'
         );
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function documents(): HasMany

@@ -50,25 +50,6 @@
             </div>
 
 
-            <div
-                class="rounded-xl bg-slate-950 px-5 py-4 text-white"
-            >
-
-                <p
-                    class="text-xs uppercase tracking-wider text-slate-400"
-                >
-                    Last Updated
-                </p>
-
-                <p
-                    id="dashboardUpdatedAt"
-                    class="mt-1 text-sm font-semibold"
-                >
-                    Loading...
-                </p>
-
-            </div>
-
         </div>
 
     </section>

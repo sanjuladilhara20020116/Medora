@@ -65,9 +65,10 @@ class StorePatientRequest extends FormRequest
             ],
 
             'email' => [
-                'nullable',
+                'required',
                 'email',
                 'max:150',
+                'unique:users,email',
             ],
 
             'phone' => [

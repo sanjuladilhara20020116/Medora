@@ -30,6 +30,12 @@ import {
 import {
     initialiseDoctorDashboard
 } from './doctor-dashboard';
+import {
+    initialisePatientPortal
+} from './patient-portal';
+import {
+    initialiseHomePage
+} from './home';
 
 const TOKEN_KEY = 'medora_access_token';
 
@@ -47,12 +53,22 @@ const redirectToLogin = () => {
     window.location.replace('/login');
 };
 
+const dashboardPathFor = (user) => {
+    const role = user?.role?.slug;
+
+    if (role === 'DOCTOR') {
+        return '/doctor-dashboard';
+    }
+
+    if (role === 'PATIENT') {
+        return '/patient-portal';
+    }
+
+    return '/dashboard';
+};
+
 const redirectToDashboard = (user) => {
-    window.location.replace(
-        user?.role?.slug === 'DOCTOR'
-            ? '/doctor-dashboard'
-            : '/dashboard'
-    );
+    window.location.replace(dashboardPathFor(user));
 };
 
 const getErrorMessage = (payload) => {
@@ -565,17 +581,36 @@ const initialiseApplication = async () => {
                 user.name?.charAt(0)?.toUpperCase() ?? 'M';
         }
 
+        const role = user.role?.slug;
+        const currentPath = window.location.pathname;
+
         if (
-            user.role?.slug === 'DOCTOR'
-            && window.location.pathname === '/dashboard'
+            role === 'PATIENT'
+            && currentPath !== '/patient-portal'
         ) {
             redirectToDashboard(user);
             return;
         }
 
         if (
-            user.role?.slug !== 'DOCTOR'
-            && window.location.pathname === '/doctor-dashboard'
+            role === 'DOCTOR'
+            && currentPath === '/dashboard'
+        ) {
+            redirectToDashboard(user);
+            return;
+        }
+
+        if (
+            role !== 'DOCTOR'
+            && currentPath === '/doctor-dashboard'
+        ) {
+            redirectToDashboard(user);
+            return;
+        }
+
+        if (
+            role !== 'PATIENT'
+            && currentPath === '/patient-portal'
         ) {
             redirectToDashboard(user);
             return;
@@ -639,6 +674,11 @@ await initialiseReportsPages(
 );
 
 await initialiseDoctorDashboard(
+    apiRequest,
+    user
+);
+
+await initialisePatientPortal(
     apiRequest,
     user
 );
@@ -709,5 +749,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (page === 'app') {
         initialiseApplication();
+    }
+
+    if (page === 'home') {
+        initialiseHomePage();
     }
 });

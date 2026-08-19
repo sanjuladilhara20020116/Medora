@@ -61,6 +61,13 @@ class RoleSeeder extends Seeder
                 'description' => 'Access to invoices, payments, billing, and financial reports.',
                 'is_active' => true,
             ],
+
+            [
+                'name' => 'Patient',
+                'slug' => 'PATIENT',
+                'description' => 'Access to the patient portal and the patient’s own profile information.',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($roles as $role) {

@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/login');
+Route::view('/', 'home')
+    ->name('home');
 
 Route::view('/login', 'auth.login')
     ->name('login');
@@ -12,6 +13,9 @@ Route::view('/dashboard', 'dashboard')
 
 Route::view('/doctor-dashboard', 'doctor-dashboard')
     ->name('doctor.dashboard');
+
+Route::view('/patient-portal', 'patient-portal')
+    ->name('patient.portal');
 
 Route::view(
     '/patients',
