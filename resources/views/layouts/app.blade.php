@@ -105,6 +105,7 @@
 
             <a
                 href="{{ route('dashboard') }}"
+                data-nav-roles="ADMIN"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('dashboard')
@@ -128,6 +129,30 @@
 
             </a>
 
+            <a
+                href="{{ route('doctor.dashboard') }}"
+                data-nav-roles="DOCTOR"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('doctor.dashboard')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('doctor.dashboard')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Doctor Dashboard
+            </a>
+
 
             {{-- ================================================= --}}
             {{-- Patients --}}
@@ -136,6 +161,7 @@
 
             <a
                 href="{{ route('patients.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('patients.*')
@@ -167,6 +193,7 @@
 
             <a
                 href="{{ route('departments.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('departments.*')
@@ -198,6 +225,7 @@
 
             <a
                 href="{{ route('doctors.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('doctors.*')
@@ -229,6 +257,7 @@
 
             <a
                 href="{{ route('appointments.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('appointments.*')
@@ -254,6 +283,7 @@
 
             <a
                 href="{{ route('medical-records.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('medical-records.*')
@@ -277,6 +307,7 @@
 
             <a
                 href="{{ route('laboratory.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,LAB_STAFF"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('laboratory.*')
@@ -300,6 +331,7 @@
 
             <a
                 href="{{ route('pharmacy.index') }}"
+                data-nav-roles="ADMIN,PHARMACIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('pharmacy.*')
@@ -323,6 +355,7 @@
 
             <a
                 href="{{ route('billing.index') }}"
+                data-nav-roles="ADMIN,ACCOUNTANT"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('billing.*')
@@ -346,6 +379,7 @@
 
             <a
                 href="{{ route('staff.index') }}"
+                data-nav-roles="ADMIN"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('staff.*')
@@ -369,6 +403,7 @@
 
             <a
                 href="{{ route('reports.index') }}"
+                data-nav-roles="ADMIN"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('reports.*')

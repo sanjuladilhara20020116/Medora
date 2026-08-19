@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\DoctorAccountCreated;
 use App\Models\Doctor;
 use App\Models\DoctorSchedule;
 use App\Models\Role;
@@ -9,6 +10,8 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class DoctorService
@@ -46,8 +49,7 @@ class DoctorService
                 function ($query) use ($search) {
 
                     $query->where(
-                        function ($query)
-                        use ($search) {
+                        function ($query) use ($search) {
 
                             $query
                                 ->where(
@@ -70,8 +72,7 @@ class DoctorService
 
                                 ->orWhereHas(
                                     'user',
-                                    function ($query)
-                                    use ($search) {
+                                    function ($query) use ($search) {
 
                                         $query
                                             ->where(
@@ -96,44 +97,39 @@ class DoctorService
                 ! empty(
                     $filters['department_id']
                 ),
-                fn ($query) =>
-                    $query->whereHas(
-                        'departments',
-                        fn ($query) =>
-                            $query->where(
-                                'departments.id',
-                                $filters[
-                                    'department_id'
-                                ]
-                            )
+                fn ($query) => $query->whereHas(
+                    'departments',
+                    fn ($query) => $query->where(
+                        'departments.id',
+                        $filters[
+                            'department_id'
+                        ]
                     )
+                )
             )
 
             ->when(
                 ($filters['status'] ?? null)
                     === 'active',
-                fn ($query) =>
-                    $query->where(
-                        'is_active',
-                        true
-                    )
+                fn ($query) => $query->where(
+                    'is_active',
+                    true
+                )
             )
 
             ->when(
                 ($filters['status'] ?? null)
                     === 'inactive',
-                fn ($query) =>
-                    $query->where(
-                        'is_active',
-                        false
-                    )
+                fn ($query) => $query->where(
+                    'is_active',
+                    false
+                )
             )
 
             ->orderByDesc('id')
 
             ->paginate($perPage);
     }
-
 
     public function create(
         array $data
@@ -154,7 +150,6 @@ class DoctorService
                         )
                         ->firstOrFail();
 
-
                 $this
                     ->validatePrimaryDepartment(
                         $data[
@@ -165,31 +160,30 @@ class DoctorService
                         ]
                     );
 
+                $defaultPassword = Str::password(
+                    14,
+                    true,
+                    true,
+                    false,
+                    false
+                );
 
                 $user =
                     User::create([
-                        'name' =>
-                            $data['name'],
+                        'name' => $data['name'],
 
-                        'username' =>
-                            $data['username'],
+                        'username' => $data['username'],
 
-                        'email' =>
-                            $data['email'],
+                        'email' => $data['email'],
 
-                        'phone' =>
-                            $data['phone'],
+                        'phone' => $data['phone'],
 
-                        'password' =>
-                            $data['password'],
+                        'password' => $defaultPassword,
 
-                        'role_id' =>
-                            $doctorRole->id,
+                        'role_id' => $doctorRole->id,
 
-                        'is_active' =>
-                            true,
+                        'is_active' => true,
                     ]);
-
 
                 $doctorData =
                     Arr::except(
@@ -199,31 +193,23 @@ class DoctorService
                             'username',
                             'email',
                             'phone',
-                            'password',
-                            'password_confirmation',
                             'department_ids',
                             'primary_department_id',
                         ]
                     );
 
-
                 $doctor =
                     Doctor::create([
                         ...$doctorData,
 
-                        'user_id' =>
-                            $user->id,
+                        'user_id' => $user->id,
 
-                        'doctor_code' =>
-                            null,
+                        'doctor_code' => null,
 
-                        'is_active' =>
-                            true,
+                        'is_active' => true,
 
-                        'is_available' =>
-                            true,
+                        'is_available' => true,
                     ]);
-
 
                 $doctor->doctor_code =
                     sprintf(
@@ -233,7 +219,6 @@ class DoctorService
                     );
 
                 $doctor->save();
-
 
                 $doctor
                     ->departments()
@@ -250,13 +235,18 @@ class DoctorService
                             )
                     );
 
+                Mail::to($user->email)->send(
+                    new DoctorAccountCreated(
+                        $user,
+                        $defaultPassword
+                    )
+                );
 
                 return $this
                     ->loadDoctor($doctor);
             }
         );
     }
-
 
     public function update(
         Doctor $doctor,
@@ -280,21 +270,15 @@ class DoctorService
                         ]
                     );
 
-
                 $userData = [
-                    'name' =>
-                        $data['name'],
+                    'name' => $data['name'],
 
-                    'username' =>
-                        $data['username'],
+                    'username' => $data['username'],
 
-                    'email' =>
-                        $data['email'],
+                    'email' => $data['email'],
 
-                    'phone' =>
-                        $data['phone'],
+                    'phone' => $data['phone'],
                 ];
-
 
                 if (
                     ! empty(
@@ -305,11 +289,9 @@ class DoctorService
                         $data['password'];
                 }
 
-
                 $doctor
                     ->user
                     ->update($userData);
-
 
                 $doctorData =
                     Arr::except(
@@ -326,11 +308,9 @@ class DoctorService
                         ]
                     );
 
-
                 $doctor->update(
                     $doctorData
                 );
-
 
                 $doctor
                     ->departments()
@@ -347,13 +327,11 @@ class DoctorService
                             )
                     );
 
-
                 return $this
                     ->loadDoctor($doctor);
             }
         );
     }
-
 
     public function archive(
         Doctor $doctor
@@ -370,12 +348,10 @@ class DoctorService
 
                 $doctor->save();
 
-
                 $doctor->user->is_active =
                     false;
 
                 $doctor->user->save();
-
 
                 $doctor->delete();
 
@@ -383,7 +359,6 @@ class DoctorService
             }
         );
     }
-
 
     public function createSchedule(
         Doctor $doctor,
@@ -401,11 +376,9 @@ class DoctorService
 
         if (! $assigned) {
             throw ValidationException::withMessages([
-                'department_id' =>
-                    'The doctor is not assigned to this department.',
+                'department_id' => 'The doctor is not assigned to this department.',
             ]);
         }
-
 
         $overlap =
             $doctor
@@ -426,14 +399,11 @@ class DoctorService
                 )
                 ->exists();
 
-
         if ($overlap) {
             throw ValidationException::withMessages([
-                'start_time' =>
-                    'This schedule overlaps an existing doctor schedule.',
+                'start_time' => 'This schedule overlaps an existing doctor schedule.',
             ]);
         }
-
 
         return $doctor
             ->schedules()
@@ -443,7 +413,6 @@ class DoctorService
                 'is_active' => true,
             ]);
     }
-
 
     public function deleteSchedule(
         Doctor $doctor,
@@ -459,7 +428,6 @@ class DoctorService
 
         $schedule->delete();
     }
-
 
     private function validatePrimaryDepartment(
         array $departmentIds,
@@ -477,12 +445,10 @@ class DoctorService
             )
         ) {
             throw ValidationException::withMessages([
-                'primary_department_id' =>
-                    'Primary department must be one of the selected departments.',
+                'primary_department_id' => 'Primary department must be one of the selected departments.',
             ]);
         }
     }
-
 
     private function departmentPayload(
         array $departmentIds,
@@ -497,20 +463,17 @@ class DoctorService
                     'intval',
                     $departmentIds
                 )
-            )
-            as $departmentId
+            ) as $departmentId
         ) {
 
             $payload[$departmentId] = [
-                'is_primary' =>
-                    $departmentId
+                'is_primary' => $departmentId
                     === $primaryDepartmentId,
             ];
         }
 
         return $payload;
     }
-
 
     private function loadDoctor(
         Doctor $doctor

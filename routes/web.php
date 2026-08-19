@@ -10,6 +10,9 @@ Route::view('/login', 'auth.login')
 Route::view('/dashboard', 'dashboard')
     ->name('dashboard');
 
+Route::view('/doctor-dashboard', 'doctor-dashboard')
+    ->name('doctor.dashboard');
+
 Route::view(
     '/patients',
     'patients.index'

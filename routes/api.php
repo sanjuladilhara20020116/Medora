@@ -309,6 +309,22 @@ Route::prefix('doctors')
 
 /*
 |--------------------------------------------------------------------------
+| Doctor Portal
+|--------------------------------------------------------------------------
+*/
+Route::prefix('doctor-portal')
+    ->middleware(['auth:api', 'role:DOCTOR'])
+    ->group(function () {
+        Route::get('/dashboard', [DoctorController::class, 'dashboard'])
+            ->name('api.doctor-portal.dashboard');
+        Route::get('/profile', [DoctorController::class, 'profile'])
+            ->name('api.doctor-portal.profile');
+        Route::patch('/profile', [DoctorController::class, 'updateProfile'])
+            ->name('api.doctor-portal.profile.update');
+    });
+
+/*
+|--------------------------------------------------------------------------
 | Appointment Management
 |--------------------------------------------------------------------------
 */
