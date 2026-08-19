@@ -5,8 +5,8 @@
 @section('header', 'Billing & Payments')
 
 @section('content')
-<div id="billingIndexPage" class="mx-auto max-w-7xl">
-    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div id="billingIndexPage" class="app-workspace mx-auto max-w-7xl">
+    <div class="workspace-heading flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h2 class="text-2xl font-bold text-slate-950">Billing & Payments</h2>
             <p class="mt-1 text-sm text-slate-500">Generate invoices from hospital services and record patient payments.</p>
@@ -17,14 +17,14 @@
     <div id="billingIndexError" class="mb-5 hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
 
     <section class="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-sm font-medium text-slate-500">Invoices</p><p id="billingInvoiceCount" class="mt-2 text-3xl font-bold text-slate-950">—</p></article>
-        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-sm font-medium text-slate-500">Total invoiced</p><p id="billingTotalInvoiced" class="mt-2 text-3xl font-bold text-slate-950">—</p></article>
-        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-sm font-medium text-slate-500">Payments received</p><p id="billingTotalPaid" class="mt-2 text-3xl font-bold text-emerald-700">—</p></article>
-        <article class="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm"><p class="text-sm font-medium text-amber-800">Outstanding</p><p id="billingOutstanding" class="mt-2 text-3xl font-bold text-amber-950">—</p></article>
+        <article class="metric-card p-5"><p class="text-sm font-semibold text-slate-600">Invoices</p><p id="billingInvoiceCount" class="mt-3 text-3xl font-extrabold text-slate-950">—</p></article>
+        <article class="metric-card metric-card--sky p-5"><p class="text-sm font-semibold text-slate-600">Total invoiced</p><p id="billingTotalInvoiced" class="mt-3 text-3xl font-extrabold text-slate-950">—</p></article>
+        <article class="metric-card metric-card--emerald p-5"><p class="text-sm font-semibold text-emerald-800">Payments received</p><p id="billingTotalPaid" class="mt-3 text-3xl font-extrabold text-emerald-700">—</p></article>
+        <article class="metric-card metric-card--amber p-5"><p class="text-sm font-semibold text-amber-800">Outstanding</p><p id="billingOutstanding" class="mt-3 text-3xl font-extrabold text-amber-950">—</p></article>
     </section>
 
-    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <form id="billingInvoiceFilters" class="grid gap-3 border-b border-slate-200 p-5 md:grid-cols-3">
+    <section class="workspace-panel workspace-panel--table">
+        <form id="billingInvoiceFilters" class="filter-bar grid gap-3 border-b border-slate-200 p-5 md:grid-cols-3">
             <input id="billingInvoiceSearch" type="search" placeholder="Invoice number or patient..." class="rounded-xl border border-slate-300 px-4 py-3">
             <select id="billingInvoiceStatus" class="rounded-xl border border-slate-300 px-4 py-3">
                 <option value="">All statuses</option>

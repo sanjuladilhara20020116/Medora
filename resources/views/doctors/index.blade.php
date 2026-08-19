@@ -8,10 +8,10 @@
 
 <div
     id="doctorsIndexPage"
-    class="mx-auto max-w-7xl"
+    class="app-workspace mx-auto max-w-7xl"
 >
 
-    <div class="mb-6 flex items-center justify-between">
+    <div class="workspace-heading flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
         <div>
             <h2 class="text-2xl font-bold text-slate-950">
@@ -41,9 +41,9 @@
     ></div>
 
 
-    <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <section class="workspace-panel workspace-panel--table">
 
-        <div class="grid gap-3 border-b border-slate-200 p-5 md:grid-cols-3">
+        <div class="filter-bar grid gap-3 border-b border-slate-200 p-5 md:grid-cols-3">
 
             <input
                 id="doctorSearch"

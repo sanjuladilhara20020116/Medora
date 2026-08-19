@@ -6,8 +6,8 @@
 
 @section('content')
 
-<div id="laboratoryIndexPage" class="mx-auto max-w-7xl">
-    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div id="laboratoryIndexPage" class="app-workspace mx-auto max-w-7xl">
+    <div class="workspace-heading flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h2 class="text-2xl font-bold text-slate-950">Laboratory Management</h2>
             <p class="mt-1 text-sm text-slate-500">Track test requests, sample collection, results and printable laboratory reports.</p>
@@ -21,8 +21,8 @@
 
     <div id="laboratoryError" class="mb-5 hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
 
-    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <form id="laboratoryFilters" class="grid gap-3 border-b border-slate-200 p-5 lg:grid-cols-5">
+    <section class="workspace-panel workspace-panel--table">
+        <form id="laboratoryFilters" class="filter-bar grid gap-3 border-b border-slate-200 p-5 lg:grid-cols-5">
             <input id="laboratorySearch" type="search" placeholder="Request, patient or test..." class="rounded-xl border border-slate-300 px-4 py-3">
             <select id="laboratoryStatusFilter" class="rounded-xl border border-slate-300 px-4 py-3">
                 <option value="">All statuses</option>

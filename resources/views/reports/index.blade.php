@@ -5,8 +5,8 @@
 @section('header', 'Reports & Analytics')
 
 @section('content')
-<div id="reportsPage" class="mx-auto max-w-7xl">
-    <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+<div id="reportsPage" class="app-workspace mx-auto max-w-7xl">
+    <div class="workspace-heading flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
             <h2 class="text-2xl font-bold text-slate-950">Reports &amp; Analytics</h2>
             <p class="mt-1 max-w-2xl text-sm text-slate-500">Review live patient, appointment, revenue, pharmacy, laboratory, and staff activity.</p>
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <form id="reportFilters" class="mb-6 grid gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-4 print:hidden">
+    <form id="reportFilters" class="workspace-panel filter-bar mb-6 grid gap-3 p-5 md:grid-cols-4 print:hidden">
         <label class="text-sm font-medium text-slate-700">From date<input id="reportFromDate" name="from_date" type="date" value="{{ now()->startOfMonth()->toDateString() }}" class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-sm"></label>
         <label class="text-sm font-medium text-slate-700">To date<input id="reportToDate" name="to_date" type="date" value="{{ now()->toDateString() }}" class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-sm"></label>
         <label class="text-sm font-medium text-slate-700">Detailed report<select id="reportType" name="report_type" class="mt-2 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm"><option value="patients">Patient report</option><option value="appointments">Appointment report</option><option value="revenue">Revenue report</option><option value="pharmacy">Pharmacy report</option><option value="laboratory">Laboratory report</option><option value="staff">Staff report</option></select></label>
@@ -29,16 +29,16 @@
     <section aria-label="Hospital overview" class="mb-6">
         <div class="mb-3 flex flex-wrap items-center justify-between gap-2"><h3 class="text-lg font-bold text-slate-950">Hospital overview</h3><p id="reportPeriod" class="text-sm text-slate-500">Loading live data…</p></div>
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-sm font-medium text-slate-500">Registered Patients</p><p id="reportPatientTotal" class="mt-2 text-3xl font-bold text-slate-950">—</p><p id="reportNewPatients" class="mt-2 text-xs text-slate-500">— new in selected period</p></article>
-            <article class="rounded-2xl border border-sky-200 bg-sky-50 p-5 shadow-sm"><p class="text-sm font-medium text-sky-800">Appointments</p><p id="reportAppointments" class="mt-2 text-3xl font-bold text-sky-950">—</p><p id="reportCompletedAppointments" class="mt-2 text-xs text-sky-800">— completed in selected period</p></article>
-            <article class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm"><p class="text-sm font-medium text-emerald-800">Payments Received</p><p id="reportRevenue" class="mt-2 text-3xl font-bold text-emerald-950">—</p><p id="reportOutstanding" class="mt-2 text-xs text-emerald-800">— outstanding balance</p></article>
-            <article class="rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm"><p class="text-sm font-medium text-violet-800">Laboratory Requests</p><p id="reportLabRequests" class="mt-2 text-3xl font-bold text-violet-950">—</p><p id="reportCompletedLabs" class="mt-2 text-xs text-violet-800">— completed in selected period</p></article>
-            <article class="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm"><p class="text-sm font-medium text-amber-800">Expired Medicine Batches</p><p id="reportExpiredBatches" class="mt-2 text-3xl font-bold text-amber-950">—</p><p id="reportDispensations" class="mt-2 text-xs text-amber-800">— dispensations in selected period</p></article>
-            <article class="rounded-2xl border border-cyan-200 bg-cyan-50 p-5 shadow-sm"><p class="text-sm font-medium text-cyan-800">Active Employees</p><p id="reportActiveEmployees" class="mt-2 text-3xl font-bold text-cyan-950">—</p><p id="reportPendingLeaves" class="mt-2 text-xs text-cyan-800">— pending leave requests</p></article>
+            <article class="metric-card p-5"><p class="text-sm font-semibold text-slate-600">Registered Patients</p><p id="reportPatientTotal" class="mt-3 text-3xl font-extrabold text-slate-950">—</p><p id="reportNewPatients" class="mt-2 text-xs text-slate-500">— new in selected period</p></article>
+            <article class="metric-card metric-card--sky p-5"><p class="text-sm font-semibold text-sky-800">Appointments</p><p id="reportAppointments" class="mt-3 text-3xl font-extrabold text-sky-950">—</p><p id="reportCompletedAppointments" class="mt-2 text-xs text-sky-800">— completed in selected period</p></article>
+            <article class="metric-card metric-card--emerald p-5"><p class="text-sm font-semibold text-emerald-800">Payments Received</p><p id="reportRevenue" class="mt-3 text-3xl font-extrabold text-emerald-950">—</p><p id="reportOutstanding" class="mt-2 text-xs text-emerald-800">— outstanding balance</p></article>
+            <article class="metric-card metric-card--violet p-5"><p class="text-sm font-semibold text-violet-800">Laboratory Requests</p><p id="reportLabRequests" class="mt-3 text-3xl font-extrabold text-violet-950">—</p><p id="reportCompletedLabs" class="mt-2 text-xs text-violet-800">— completed in selected period</p></article>
+            <article class="metric-card metric-card--amber p-5"><p class="text-sm font-semibold text-amber-800">Expired Medicine Batches</p><p id="reportExpiredBatches" class="mt-3 text-3xl font-extrabold text-amber-950">—</p><p id="reportDispensations" class="mt-2 text-xs text-amber-800">— dispensations in selected period</p></article>
+            <article class="metric-card metric-card--sky p-5"><p class="text-sm font-semibold text-cyan-800">Active Employees</p><p id="reportActiveEmployees" class="mt-3 text-3xl font-extrabold text-cyan-950">—</p><p id="reportPendingLeaves" class="mt-2 text-xs text-cyan-800">— pending leave requests</p></article>
         </div>
     </section>
 
-    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <section class="workspace-panel workspace-panel--table">
         <div class="border-b border-slate-200 p-5"><h3 id="reportDetailTitle" class="text-lg font-bold text-slate-950">Patient report</h3><p id="reportDetailDescription" class="mt-1 text-sm text-slate-500">Loading selected report…</p></div>
         <div class="grid gap-6 p-5 xl:grid-cols-5">
             <div class="xl:col-span-3"><h4 class="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500">Activity by date</h4><div id="reportChart" class="space-y-3" aria-live="polite"></div></div>

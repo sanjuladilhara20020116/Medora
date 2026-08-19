@@ -52,7 +52,7 @@
 
     <aside
         id="sidebar"
-        class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col overflow-hidden bg-gradient-to-b from-slate-950 via-slate-950 to-cyan-950 text-white shadow-2xl shadow-slate-950/20 transition-transform duration-300 lg:translate-x-0"
+        class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col overflow-hidden bg-gradient-to-b from-slate-950 via-slate-950 to-cyan-950 text-white shadow-2xl shadow-slate-950/20 transition-transform duration-300 lg:translate-x-0"
     >
 
         <div class="pointer-events-none absolute -left-24 top-28 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl"></div>
@@ -459,7 +459,7 @@
     {{-- Main Application --}}
     {{-- ========================================================= --}}
 
-    <div class="lg:pl-72">
+    <div class="lg:pl-64">
 
 
         {{-- ===================================================== --}}
@@ -467,7 +467,7 @@
         {{-- ===================================================== --}}
 
         <header
-            class="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200/80 bg-white/85 px-5 shadow-sm shadow-slate-950/[0.03] backdrop-blur-xl lg:px-8"
+            class="sticky top-0 z-30 flex h-[4.5rem] items-center justify-between border-b border-slate-200/80 bg-white/85 px-5 shadow-sm shadow-slate-950/[0.03] backdrop-blur-xl lg:px-8"
         >
 
             {{-- Left Header --}}
@@ -568,7 +568,7 @@
         {{-- ===================================================== --}}
 
         <main
-            class="min-h-[calc(100vh-5rem)] bg-[radial-gradient(circle_at_top_right,rgba(207,250,254,0.55),transparent_30%),linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] p-5 lg:p-8"
+            class="min-h-[calc(100vh-4.5rem)] bg-[radial-gradient(circle_at_top_right,rgba(207,250,254,0.65),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(224,242,254,0.48),transparent_28%),linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] p-5 lg:p-8"
         >
 
             @yield('content')

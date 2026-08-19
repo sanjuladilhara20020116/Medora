@@ -5,7 +5,7 @@
 @section('header', 'Patient Portal')
 
 @section('content')
-<div id="patientPortalPage" class="mx-auto max-w-6xl">
+<div id="patientPortalPage" class="app-workspace mx-auto max-w-6xl">
     <div class="mb-7 rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 p-6 text-white shadow-xl sm:p-8">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">Your Medora space</p>
         <div class="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">

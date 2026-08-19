@@ -8,10 +8,10 @@
 
 <div
     id="departmentsPage"
-    class="mx-auto max-w-7xl"
+    class="app-workspace mx-auto max-w-7xl"
 >
 
-    <div class="mb-6">
+    <div class="workspace-heading">
         <h2 class="text-2xl font-bold text-slate-950">
             Hospital Departments
         </h2>
@@ -28,7 +28,7 @@
     ></div>
 
 
-    <div class="grid gap-6 xl:grid-cols-[380px_1fr]">
+    <div class="department-workspace grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]">
 
         <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
 
