@@ -61,19 +61,25 @@
                     class="rounded-xl border border-slate-300 px-4 py-3"
                 >
 
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    class="rounded-xl border border-slate-300 px-4 py-3"
-                >
+                @if(empty($doctorId))
+                    <p class="rounded-xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 md:col-span-2">
+                        Medora will generate a secure default password and send it to this email address after the doctor account is created.
+                    </p>
+                @else
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Optional password reset (min. 8 characters)"
+                        class="rounded-xl border border-slate-300 px-4 py-3"
+                    >
 
-                <input
-                    name="password_confirmation"
-                    type="password"
-                    placeholder="Confirm password"
-                    class="rounded-xl border border-slate-300 px-4 py-3"
-                >
+                    <input
+                        name="password_confirmation"
+                        type="password"
+                        placeholder="Confirm new password"
+                        class="rounded-xl border border-slate-300 px-4 py-3"
+                    >
+                @endif
 
             </div>
 

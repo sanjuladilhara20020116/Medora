@@ -21,6 +21,10 @@ class UpdatePatientRequest extends FormRequest
             ? $patient->id
             : $patient;
 
+        $portalUserId = $patient instanceof Patient
+            ? $patient->user_id
+            : null;
+
         return [
             'first_name' => [
                 'required',
@@ -76,9 +80,11 @@ class UpdatePatientRequest extends FormRequest
             ],
 
             'email' => [
+                Rule::requiredIf($portalUserId !== null),
                 'nullable',
                 'email',
                 'max:150',
+                Rule::unique('users', 'email')->ignore($portalUserId),
             ],
 
             'phone' => [

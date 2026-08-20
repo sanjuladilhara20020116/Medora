@@ -8,11 +8,11 @@
 
 <div
     id="appointmentsIndexPage"
-    class="mx-auto max-w-7xl"
+    class="app-workspace mx-auto max-w-7xl"
 >
 
     <div
-        class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+        class="workspace-heading flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
     >
 
         <div>
@@ -44,12 +44,12 @@
 
 
     <section
-        class="rounded-2xl border border-slate-200 bg-white shadow-sm"
+        class="workspace-panel workspace-panel--table"
     >
 
         <form
             id="appointmentFilters"
-            class="grid gap-3 border-b border-slate-200 p-5 lg:grid-cols-5"
+            class="filter-bar grid gap-3 border-b border-slate-200 p-5 lg:grid-cols-5"
         >
 
             <input

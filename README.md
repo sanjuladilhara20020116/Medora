@@ -1,4 +1,4 @@
-# Medora
+
 # Medora HMS
 
 <p align="center">
@@ -94,3 +94,135 @@ app/
 ├── Mail/            # Doctor and patient account mailables
 ├── Models/          # Domain models and relationships
 └── Services/        # Business workflows
+
+database/
+├── migrations/      # Database schema
+└── seeders/         # Roles and initial data
+
+resources/
+├── css/             # Tailwind-based design system
+├── js/              # Page-specific API and UI modules
+└── views/           # Blade layouts and application screens
+
+routes/
+├── api.php          # Protected JSON API routes
+└── web.php          # Browser routes
+```
+
+## Getting started
+
+### Prerequisites
+
+- PHP **8.3+**
+- Composer
+- Node.js and npm
+- MySQL
+
+### 1. Clone the repository
+
+```bash
+git clone <your-repository-url>
+cd Medora
+```
+
+### 2. Install dependencies
+
+```bash
+composer install
+npm install
+```
+
+### 3. Configure the environment
+
+```bash
+copy .env.example .env
+php artisan key:generate
+php artisan jwt:secret
+```
+
+Update the database values in `.env` for your local MySQL database:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=medora
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+> Keep `.env` private. Never commit database credentials, mail passwords, or application secrets.
+
+### 4. Create the database tables and roles
+
+```bash
+php artisan migrate --seed
+```
+
+### 5. Start the application
+
+In one terminal, start Vite for frontend assets:
+
+```bash
+npm run dev
+```
+
+In a second terminal, start Laravel:
+
+```bash
+php artisan serve
+```
+
+Open `http://127.0.0.1:8000` in your browser.
+
+If `php artisan serve` is unavailable in your local PHP environment, use this equivalent command from the project root:
+
+```bash
+php -S 127.0.0.1:8000 -t public public/index.php
+```
+
+## Development commands
+
+```bash
+# Run the automated test suite
+php artisan test
+
+# Build frontend assets for production
+npm run build
+
+# Clear cached configuration after updating .env
+php artisan config:clear
+```
+
+## Email delivery
+
+Medora creates welcome-account mail messages for newly provisioned doctor and patient accounts. During local development, Laravel can use the `log` mail driver, which writes messages to `storage/logs/laravel.log`.
+
+Before deploying, configure a real SMTP provider in `.env` so welcome credentials are delivered to users’ email addresses. Do not store live mail passwords in source control.
+
+## Screens and modules
+
+- Public landing page and secure login
+- Administration dashboard
+- Doctor clinical dashboard
+- Patient self-service portal
+- Patient, doctor, department, and appointment management
+- Electronic medical records
+- Laboratory, pharmacy, billing, staff, and reporting workspaces
+
+## Testing
+
+The project uses PHPUnit through Laravel’s test runner:
+
+```bash
+php artisan test
+```
+
+Run the test suite before pushing changes to ensure public routes and core application behavior still work as expected.
+
+---
+
+<p align="center">
+  Built with care for better-connected healthcare workflows. <br>
+  <strong>Medora HMS</strong> · Hospital Management System
+</p>

@@ -38,7 +38,7 @@
         <p
             class="mt-1 text-sm text-slate-500"
         >
-            Enter the patient's hospital registration information.
+            Enter the patient's hospital registration information. New patients receive patient portal sign-in details by email.
         </p>
 
     </div>
@@ -158,6 +158,7 @@
                 <input
                     name="email"
                     type="email"
+                    @unless(isset($patientId)) required @endunless
                     placeholder="Email"
                     class="rounded-xl border border-slate-300 px-4 py-3"
                 >

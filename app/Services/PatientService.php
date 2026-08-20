@@ -2,12 +2,18 @@
 
 namespace App\Services;
 
+use App\Mail\PatientAccountCreated;
 use App\Models\Patient;
 use App\Models\PatientDocument;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Throwable;
 
 class PatientService
@@ -129,6 +135,19 @@ class PatientService
                 $registeredBy
             ) {
 
+                $patientRole = Role::query()
+                    ->where('slug', 'PATIENT')
+                    ->where('is_active', true)
+                    ->firstOrFail();
+
+                $defaultPassword = Str::password(
+                    14,
+                    true,
+                    true,
+                    false,
+                    false
+                );
+
                 $patient = Patient::create([
                     ...$data,
 
@@ -147,10 +166,37 @@ class PatientService
                         $patient->id
                     );
 
+                $user = User::create([
+                    'name' => trim(
+                        $patient->first_name.' '.$patient->last_name
+                    ),
+                    'username' => sprintf(
+                        'patient-%s-%06d',
+                        now()->format('Y'),
+                        $patient->id
+                    ),
+                    'email' => $patient->email,
+                    'phone' => $patient->phone,
+                    'password' => $defaultPassword,
+                    'role_id' => $patientRole->id,
+                    'is_active' => true,
+                ]);
+
+                $patient->user_id = $user->id;
+
                 $patient->save();
+
+                Mail::to($user->email)->send(
+                    new PatientAccountCreated(
+                        $patient,
+                        $user,
+                        $defaultPassword
+                    )
+                );
 
                 return $patient->fresh([
                     'registeredBy:id,name,username',
+                    'user:id,name,username,email,phone',
                 ]);
             }
         );
@@ -162,13 +208,25 @@ class PatientService
         array $data
     ): Patient {
 
-        $patient->fill($data);
+        return DB::transaction(function () use ($patient, $data) {
+            $patient->fill($data);
+            $patient->save();
 
-        $patient->save();
+            if ($patient->user) {
+                $patient->user->update([
+                    'name' => trim(
+                        $patient->first_name.' '.$patient->last_name
+                    ),
+                    'email' => $patient->email,
+                    'phone' => $patient->phone,
+                ]);
+            }
 
-        return $patient->fresh([
-            'registeredBy:id,name,username',
-        ]);
+            return $patient->fresh([
+                'registeredBy:id,name,username',
+                'user:id,name,username,email,phone',
+            ]);
+        });
     }
 
 
@@ -179,13 +237,63 @@ class PatientService
         DB::transaction(
             function () use ($patient) {
 
+                $user = $patient->user;
+
                 $patient->is_active = false;
 
                 $patient->save();
 
                 $patient->delete();
+
+                if ($user) {
+                    $user->is_active = false;
+                    $user->save();
+                    $user->delete();
+                }
             }
         );
+    }
+
+    public function updatePortalProfile(
+        Patient $patient,
+        array $data
+    ): Patient {
+        return DB::transaction(function () use ($patient, $data) {
+            $patient->update(Arr::only($data, [
+                'first_name',
+                'last_name',
+                'email',
+                'phone',
+                'alternate_phone',
+                'address_line_1',
+                'address_line_2',
+                'city',
+                'district',
+                'postal_code',
+                'country',
+                'emergency_contact_name',
+                'emergency_contact_relation',
+                'emergency_contact_phone',
+            ]));
+
+            $userData = [
+                'name' => trim(
+                    $patient->first_name.' '.$patient->last_name
+                ),
+                'email' => $patient->email,
+                'phone' => $patient->phone,
+            ];
+
+            if (! empty($data['password'])) {
+                $userData['password'] = $data['password'];
+            }
+
+            $patient->user->update($userData);
+
+            return $patient->fresh([
+                'user:id,name,username,email,phone,last_login_at',
+            ]);
+        });
     }
 
 

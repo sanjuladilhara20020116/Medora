@@ -8,7 +8,7 @@
 
 <div
     id="dashboardDataRoot"
-    class="mx-auto max-w-7xl"
+    class="app-workspace mx-auto max-w-7xl"
 >
 
     {{-- API Error --}}
@@ -20,7 +20,7 @@
 
     {{-- Welcome --}}
     <section
-        class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8"
+        class="page-hero p-6 text-white lg:p-8"
     >
 
         <div
@@ -30,44 +30,25 @@
             <div>
 
                 <p
-                    class="text-sm font-semibold text-cyan-700"
+                    class="page-hero-eyebrow"
                 >
                     Hospital Administration
                 </p>
 
                 <h2
-                    class="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"
+                    class="mt-2 text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
                 >
                     Medora Administration Dashboard
                 </h2>
 
                 <p
-                    class="mt-2 text-sm leading-6 text-slate-500"
+                    class="mt-2 max-w-2xl text-sm leading-6 text-slate-200"
                 >
-                    Live information retrieved from the Medora database.
+                    A clear, live overview of your hospital operations, teams, and care activity.
                 </p>
 
             </div>
 
-
-            <div
-                class="rounded-xl bg-slate-950 px-5 py-4 text-white"
-            >
-
-                <p
-                    class="text-xs uppercase tracking-wider text-slate-400"
-                >
-                    Last Updated
-                </p>
-
-                <p
-                    id="dashboardUpdatedAt"
-                    class="mt-1 text-sm font-semibold"
-                >
-                    Loading...
-                </p>
-
-            </div>
 
         </div>
 
@@ -113,16 +94,21 @@
         @foreach($coreCards as $card)
 
             <article
-                class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+                class="metric-card p-5"
             >
 
                 <div
-                    class="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-50"
+                    class="metric-card-icon mb-5"
                 >
-
-                    <div
-                        class="h-3 w-3 rounded-full bg-cyan-500"
-                    ></div>
+                    @if ($loop->index === 0)
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+                    @elseif ($loop->index === 1)
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+                    @elseif ($loop->index === 2)
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+                    @else
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M8 10h.01M16 10h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+                    @endif
 
                 </div>
 
@@ -155,18 +141,18 @@
     {{-- HMS Module Statistics --}}
     <section class="mt-8">
 
-        <div class="mb-4">
+        <div class="workspace-heading mb-4">
 
             <h3
                 class="text-lg font-bold text-slate-950"
             >
-                HMS Module Data
+                Operational activity
             </h3>
 
             <p
                 class="mt-1 text-sm text-slate-500"
             >
-                Module statistics become live when their database modules are initialized.
+                Live totals from every connected care module.
             </p>
 
         </div>
@@ -193,7 +179,7 @@
             @foreach($moduleCards as $module)
 
                 <article
-                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+                class="metric-card p-5"
                 >
 
                     <div
@@ -217,9 +203,9 @@
 
                         </div>
 
-                        <div
-                            class="h-10 w-10 rounded-xl bg-slate-100"
-                        ></div>
+                        <div class="metric-card-icon">
+                            <span class="h-2.5 w-2.5 rounded-full bg-current"></span>
+                        </div>
 
                     </div>
 
@@ -247,7 +233,7 @@
 
         {{-- Role Distribution --}}
         <article
-            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+            class="workspace-panel p-6"
         >
 
             <div class="mb-6">
@@ -284,7 +270,7 @@
 
         {{-- Recent Logins --}}
         <article
-            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+            class="workspace-panel p-6"
         >
 
             <div class="mb-6">

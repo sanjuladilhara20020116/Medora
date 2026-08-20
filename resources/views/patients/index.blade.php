@@ -8,11 +8,11 @@
 
 <div
     id="patientsIndexPage"
-    class="mx-auto max-w-7xl"
+    class="app-workspace mx-auto max-w-7xl"
 >
 
     <div
-        class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+        class="workspace-heading flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
     >
 
         <div>
@@ -46,7 +46,7 @@
 
 
     <section
-        class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+        class="workspace-panel filter-bar p-5"
     >
 
         <form
@@ -112,7 +112,7 @@
 
 
     <section
-        class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+        class="workspace-panel workspace-panel--table mt-5"
     >
 
         <div class="overflow-x-auto">

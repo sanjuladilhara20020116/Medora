@@ -24,6 +24,18 @@ import {
 import {
     initialiseStaffPages
 } from './staff';
+import {
+    initialiseReportsPages
+} from './reports';
+import {
+    initialiseDoctorDashboard
+} from './doctor-dashboard';
+import {
+    initialisePatientPortal
+} from './patient-portal';
+import {
+    initialiseHomePage
+} from './home';
 
 const TOKEN_KEY = 'medora_access_token';
 
@@ -41,8 +53,22 @@ const redirectToLogin = () => {
     window.location.replace('/login');
 };
 
-const redirectToDashboard = () => {
-    window.location.replace('/dashboard');
+const dashboardPathFor = (user) => {
+    const role = user?.role?.slug;
+
+    if (role === 'DOCTOR') {
+        return '/doctor-dashboard';
+    }
+
+    if (role === 'PATIENT') {
+        return '/patient-portal';
+    }
+
+    return '/dashboard';
+};
+
+const redirectToDashboard = (user) => {
+    window.location.replace(dashboardPathFor(user));
 };
 
 const getErrorMessage = (payload) => {
@@ -119,8 +145,8 @@ const initialiseLoginPage = async () => {
 
     if (existingToken) {
         try {
-            await apiRequest('/auth/me');
-            redirectToDashboard();
+            const response = await apiRequest('/auth/me');
+            redirectToDashboard(response.data.user);
             return;
         } catch {
             clearToken();
@@ -169,7 +195,7 @@ const initialiseLoginPage = async () => {
             }
 
             saveToken(token);
-            redirectToDashboard();
+            redirectToDashboard(response.data.user);
 
         } catch (error) {
             clearToken();
@@ -503,6 +529,15 @@ const loadAdminDashboard = async () => {
     }
 };
 
+const configureNavigation = (user) => {
+    const role = user.role?.slug;
+
+    document.querySelectorAll('[data-nav-roles]').forEach((link) => {
+        const allowedRoles = link.dataset.navRoles.split(',');
+        link.classList.toggle('hidden', !allowedRoles.includes(role));
+    });
+};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -545,6 +580,43 @@ const initialiseApplication = async () => {
             userAvatar.textContent =
                 user.name?.charAt(0)?.toUpperCase() ?? 'M';
         }
+
+        const role = user.role?.slug;
+        const currentPath = window.location.pathname;
+
+        if (
+            role === 'PATIENT'
+            && currentPath !== '/patient-portal'
+        ) {
+            redirectToDashboard(user);
+            return;
+        }
+
+        if (
+            role === 'DOCTOR'
+            && currentPath === '/dashboard'
+        ) {
+            redirectToDashboard(user);
+            return;
+        }
+
+        if (
+            role !== 'DOCTOR'
+            && currentPath === '/doctor-dashboard'
+        ) {
+            redirectToDashboard(user);
+            return;
+        }
+
+        if (
+            role !== 'PATIENT'
+            && currentPath === '/patient-portal'
+        ) {
+            redirectToDashboard(user);
+            return;
+        }
+
+        configureNavigation(user);
 
         shell.classList.remove('hidden');
         if (user.role?.slug === 'ADMIN') {
@@ -592,6 +664,21 @@ await initialiseBillingPages(
 );
 
 await initialiseStaffPages(
+    apiRequest,
+    user
+);
+
+await initialiseReportsPages(
+    apiRequest,
+    user
+);
+
+await initialiseDoctorDashboard(
+    apiRequest,
+    user
+);
+
+await initialisePatientPortal(
     apiRequest,
     user
 );
@@ -662,5 +749,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (page === 'app') {
         initialiseApplication();
+    }
+
+    if (page === 'home') {
+        initialiseHomePage();
     }
 });

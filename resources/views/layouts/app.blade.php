@@ -52,31 +52,32 @@
 
     <aside
         id="sidebar"
-        class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col bg-slate-950 text-white transition-transform duration-300 lg:translate-x-0"
+        class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col overflow-hidden bg-gradient-to-b from-slate-950 via-slate-950 to-cyan-950 text-white shadow-2xl shadow-slate-950/20 transition-transform duration-300 lg:translate-x-0"
     >
+
+        <div class="pointer-events-none absolute -left-24 top-28 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl"></div>
+        <div class="pointer-events-none absolute -right-28 bottom-20 h-72 w-72 rounded-full bg-sky-500/10 blur-3xl"></div>
 
         {{-- ===================================================== --}}
         {{-- Logo --}}
         {{-- ===================================================== --}}
 
         <div
-            class="flex h-20 items-center border-b border-white/10 px-6"
+            class="relative flex h-24 items-center border-b border-white/10 px-6"
         >
 
-            <div
-                class="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-400 font-bold text-slate-950"
-            >
-                M
-            </div>
+            <a href="{{ route('home') }}" class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white/10 p-1 ring-1 ring-white/15 outline-none transition hover:bg-white/15 focus-visible:ring-4 focus-visible:ring-cyan-200/50" aria-label="Go to Medora home">
+                <img src="{{ asset('images/medora-logo.png') }}" alt="Medora" class="h-full w-full object-contain">
+            </a>
 
             <div class="ml-3">
 
-                <p class="font-bold">
+                <p class="font-extrabold tracking-tight">
                     Medora
                 </p>
 
-                <p class="text-xs text-slate-400">
-                    Hospital Management
+                <p class="text-[11px] font-medium text-cyan-100/60">
+                    Connected care platform
                 </p>
 
             </div>
@@ -89,7 +90,7 @@
         {{-- ===================================================== --}}
 
         <nav
-            class="flex-1 overflow-y-auto px-4 py-6"
+            class="relative flex-1 overflow-y-auto px-4 py-6"
         >
 
             <p
@@ -105,6 +106,7 @@
 
             <a
                 href="{{ route('dashboard') }}"
+                data-nav-roles="ADMIN"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('dashboard')
@@ -128,6 +130,54 @@
 
             </a>
 
+            <a
+                href="{{ route('doctor.dashboard') }}"
+                data-nav-roles="DOCTOR"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('doctor.dashboard')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('doctor.dashboard')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Doctor Dashboard
+            </a>
+
+            <a
+                href="{{ route('patient.portal') }}"
+                data-nav-roles="PATIENT"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('patient.portal')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
+            >
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('patient.portal')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
+
+                Patient Portal
+            </a>
+
 
             {{-- ================================================= --}}
             {{-- Patients --}}
@@ -136,6 +186,7 @@
 
             <a
                 href="{{ route('patients.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('patients.*')
@@ -167,6 +218,7 @@
 
             <a
                 href="{{ route('departments.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('departments.*')
@@ -198,6 +250,7 @@
 
             <a
                 href="{{ route('doctors.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('doctors.*')
@@ -229,6 +282,7 @@
 
             <a
                 href="{{ route('appointments.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,RECEPTIONIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('appointments.*')
@@ -254,6 +308,7 @@
 
             <a
                 href="{{ route('medical-records.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('medical-records.*')
@@ -277,6 +332,7 @@
 
             <a
                 href="{{ route('laboratory.index') }}"
+                data-nav-roles="ADMIN,DOCTOR,NURSE,LAB_STAFF"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('laboratory.*')
@@ -300,6 +356,7 @@
 
             <a
                 href="{{ route('pharmacy.index') }}"
+                data-nav-roles="ADMIN,PHARMACIST"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('pharmacy.*')
@@ -323,6 +380,7 @@
 
             <a
                 href="{{ route('billing.index') }}"
+                data-nav-roles="ADMIN,ACCOUNTANT"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('billing.*')
@@ -346,6 +404,7 @@
 
             <a
                 href="{{ route('staff.index') }}"
+                data-nav-roles="ADMIN"
                 class="
                     mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
                     {{ request()->routeIs('staff.*')
@@ -367,93 +426,31 @@
                 Staff
             </a>
 
-
-            {{-- ================================================= --}}
-            {{-- Future HMS Modules --}}
-            {{-- ================================================= --}}
-
-            <p
-                class="mb-2 mt-6 px-3 text-xs font-semibold uppercase tracking-wider text-slate-600"
+            <a
+                href="{{ route('reports.index') }}"
+                data-nav-roles="ADMIN"
+                class="
+                    mb-1 flex items-center rounded-xl px-3 py-3 text-sm font-medium
+                    {{ request()->routeIs('reports.*')
+                        ? 'bg-cyan-400/10 font-semibold text-cyan-300'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                    }}
+                "
             >
-                Coming Next
-            </p>
+                <span
+                    class="
+                        mr-3 h-2 w-2 rounded-full
+                        {{ request()->routeIs('reports.*')
+                            ? 'bg-cyan-400'
+                            : 'bg-slate-700'
+                        }}
+                    "
+                ></span>
 
-
-            @php
-
-                $futureModules = [
-                    'Reports & Analytics',
-                ];
-
-            @endphp
-
-
-            @foreach($futureModules as $module)
-
-                <div
-                    class="mb-1 flex items-center justify-between rounded-xl px-3 py-3 text-sm text-slate-400"
-                >
-
-                    <div class="flex items-center">
-
-                        <span
-                            class="mr-3 h-2 w-2 rounded-full bg-slate-700"
-                        ></span>
-
-                        {{ $module }}
-
-                    </div>
-
-                    <span
-                        class="rounded-md bg-white/5 px-2 py-1 text-[10px] font-medium text-slate-500"
-                    >
-                        Soon
-                    </span>
-
-                </div>
-
-            @endforeach
+                Reports &amp; Analytics
+            </a>
 
         </nav>
-
-
-        {{-- ===================================================== --}}
-        {{-- Sidebar Footer --}}
-        {{-- ===================================================== --}}
-
-        <div
-            class="border-t border-white/10 p-4"
-        >
-
-            <div
-                class="rounded-xl bg-white/5 px-4 py-3"
-            >
-
-                <div
-                    class="flex items-center gap-2"
-                >
-
-                    <span
-                        class="h-2 w-2 rounded-full bg-emerald-400"
-                    ></span>
-
-                    <p
-                        class="text-xs font-semibold text-slate-300"
-                    >
-                        Secure Session
-                    </p>
-
-                </div>
-
-                <p
-                    class="mt-1 text-xs text-slate-500"
-                >
-                    Protected by JWT authentication
-                </p>
-
-            </div>
-
-        </div>
 
     </aside>
 
@@ -462,7 +459,7 @@
     {{-- Main Application --}}
     {{-- ========================================================= --}}
 
-    <div class="lg:pl-72">
+    <div class="lg:pl-64">
 
 
         {{-- ===================================================== --}}
@@ -470,7 +467,7 @@
         {{-- ===================================================== --}}
 
         <header
-            class="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white/95 px-5 backdrop-blur lg:px-8"
+            class="sticky top-0 z-30 flex h-[4.5rem] items-center justify-between border-b border-slate-200/80 bg-white/85 px-5 shadow-sm shadow-slate-950/[0.03] backdrop-blur-xl lg:px-8"
         >
 
             {{-- Left Header --}}
@@ -494,13 +491,13 @@
                 <div>
 
                     <p
-                        class="text-xs font-medium uppercase tracking-wider text-slate-400"
+                        class="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-700"
                     >
                         Medora HMS
                     </p>
 
                     <h1
-                        class="font-bold text-slate-950"
+                        class="font-extrabold tracking-tight text-slate-950"
                     >
                         @yield('header', 'Dashboard')
                     </h1>
@@ -571,7 +568,7 @@
         {{-- ===================================================== --}}
 
         <main
-            class="p-5 lg:p-8"
+            class="min-h-[calc(100vh-4.5rem)] bg-[radial-gradient(circle_at_top_right,rgba(207,250,254,0.65),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(224,242,254,0.48),transparent_28%),linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] p-5 lg:p-8"
         >
 
             @yield('content')

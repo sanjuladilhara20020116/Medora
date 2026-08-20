@@ -353,6 +353,14 @@ async (apiRequest, user) => {
             ?.classList.add(
                 'hidden'
             );
+
+        root
+            .querySelector(
+                '.department-workspace'
+            )
+            ?.classList.add(
+                'department-workspace--read-only'
+            );
     }
 
 

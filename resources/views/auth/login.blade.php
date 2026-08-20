@@ -13,6 +13,14 @@
     >
 
         <div
+            class="absolute inset-0 bg-cover bg-center opacity-30"
+            style="background-image: url('{{ asset('images/home-hero-team.png') }}');"
+            aria-hidden="true"
+        ></div>
+
+        <div class="absolute inset-0 bg-[linear-gradient(125deg,rgba(2,6,23,0.98),rgba(8,47,73,0.86),rgba(2,6,23,0.72))]" aria-hidden="true"></div>
+
+        <div
             class="absolute -left-20 top-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl"
         ></div>
 
@@ -22,12 +30,10 @@
 
         <div class="relative z-10">
 
-            <div class="flex items-center gap-3">
+            <a href="{{ route('home') }}" class="flex items-center gap-3 rounded-2xl outline-none focus-visible:ring-4 focus-visible:ring-cyan-200/50" aria-label="Go to Medora home">
 
-                <div
-                    class="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500 font-bold text-slate-950"
-                >
-                    M
+                <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white/10 p-1 ring-1 ring-white/20">
+                    <img src="{{ asset('images/medora-logo.png') }}" alt="Medora" class="h-full w-full object-contain">
                 </div>
 
                 <div>
@@ -40,7 +46,7 @@
                     </p>
                 </div>
 
-            </div>
+            </a>
 
         </div>
 
@@ -66,34 +72,6 @@
                 administration from one centralized system.
             </p>
 
-            <div class="mt-10 grid grid-cols-2 gap-4">
-
-                <div
-                    class="rounded-2xl border border-white/10 bg-white/5 p-4"
-                >
-                    <p class="font-semibold">
-                        Secure Access
-                    </p>
-
-                    <p class="mt-1 text-sm text-slate-400">
-                        JWT authentication and role-based authorization.
-                    </p>
-                </div>
-
-                <div
-                    class="rounded-2xl border border-white/10 bg-white/5 p-4"
-                >
-                    <p class="font-semibold">
-                        Centralized Care
-                    </p>
-
-                    <p class="mt-1 text-sm text-slate-400">
-                        Connected hospital workflows in a single platform.
-                    </p>
-                </div>
-
-            </div>
-
         </div>
 
         <p class="relative z-10 text-sm text-slate-500">
@@ -105,18 +83,16 @@
 
     {{-- Login Panel --}}
     <main
-        class="flex min-h-screen items-center justify-center px-6 py-12 sm:px-10"
+            class="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(207,250,254,0.85),transparent_34%),linear-gradient(180deg,#ffffff_0%,#f1f5f9_100%)] px-6 py-12 sm:px-10"
     >
 
         <div class="w-full max-w-md">
 
             {{-- Mobile Logo --}}
-            <div class="mb-10 flex items-center gap-3 lg:hidden">
+            <a href="{{ route('home') }}" class="mb-10 flex w-fit items-center gap-3 rounded-2xl outline-none focus-visible:ring-4 focus-visible:ring-cyan-200 lg:hidden" aria-label="Go to Medora home">
 
-                <div
-                    class="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950 font-bold text-white"
-                >
-                    M
+                <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 p-1 shadow-lg shadow-slate-950/10">
+                    <img src="{{ asset('images/medora-logo.png') }}" alt="Medora" class="h-full w-full object-contain">
                 </div>
 
                 <div>
@@ -129,10 +105,10 @@
                     </p>
                 </div>
 
-            </div>
+            </a>
 
 
-            <div class="mb-8">
+            <div class="mb-8 rounded-3xl border border-white/80 bg-white/80 p-6 shadow-xl shadow-slate-950/[0.06] backdrop-blur sm:p-8">
 
                 <p
                     class="mb-2 text-sm font-semibold text-cyan-700"
@@ -161,7 +137,7 @@
             ></div>
 
 
-            <form id="loginForm" class="space-y-5">
+            <form id="loginForm" class="space-y-5 rounded-3xl border border-white/80 bg-white/80 p-6 shadow-xl shadow-slate-950/[0.06] backdrop-blur sm:p-8">
 
                 <div>
 
@@ -232,10 +208,8 @@
             </form>
 
 
-            <p
-                class="mt-8 text-center text-xs leading-5 text-slate-400"
-            >
-                Access is restricted to authorized hospital personnel.
+            <p class="mt-8 text-center text-xs leading-5 text-slate-400">
+                Secure access for authorized patients and hospital teams.
             </p>
 
         </div>

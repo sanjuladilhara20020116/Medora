@@ -41,13 +41,6 @@ class StoreDoctorRequest extends FormRequest
                 'max:20',
             ],
 
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'confirmed',
-            ],
-
             'registration_number' => [
                 'required',
                 'string',

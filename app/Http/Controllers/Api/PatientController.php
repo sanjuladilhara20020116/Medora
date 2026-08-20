@@ -83,7 +83,7 @@ class PatientController extends Controller
             'success' => true,
 
             'message' =>
-                'Patient registered successfully.',
+                'Patient registered successfully. A default patient portal password has been sent to the patient email address.',
 
             'data' =>
                 (new PatientResource($patient))
